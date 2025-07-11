@@ -1,26 +1,105 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: hsla(210, 31%, 95%, 0.932);
+  --foreground: hsl(210 30% 10%);
+  --card: hsl(210 50% 98%);
+  --card-foreground: hsl(210 30% 20%);
+  --popover: hsl(210 50% 98%);
+  --popover-foreground: hsl(210 30% 15%);
+  --primary: hsl(240 80% 30%);
+  --primary-foreground: hsl(50 100% 95%);
+  --secondary: hsl(50 100% 80%);
+  --secondary-foreground: hsl(210 30% 10%);
+  --muted: hsl(240 20% 90%);
+  --muted-foreground: hsl(210 30% 20%);
+  --accent: hsl(50 100% 40%);
+  --accent-foreground: hsl(210 30% 95%);
+  --destructive: hsl(0 100% 50%);
+  --destructive-foreground: hsl(210 30% 95%);
+  --border: hsl(210 30% 85%);
+  --input: hsl(210 30% 95%);
+  --ring: hsl(240 80% 60%);
+  --chart-1: hsl(240 80% 60%);
+  --chart-2: hsl(50 100% 50%);
+  --chart-3: hsl(30 100% 70%);
+  --chart-4: hsl(210 40% 80%);
+  --chart-5: hsl(60 100% 40%);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: hsl(209, 38%, 14%);
+  --foreground: hsl(210 30% 95%);
+  --card: hsl(210 30% 15%);
+  --card-foreground: hsl(210 30% 90%);
+  --popover: hsl(210 30% 20%);
+  --popover-foreground: hsl(210 30% 95%);
+  --primary: hsl(240 80% 40%);
+  --primary-foreground: hsl(50 100% 95%);
+  --secondary: hsl(50 100% 30%);
+  --secondary-foreground: hsl(210 30% 90%);
+  --muted: hsl(240 20% 30%);
+  --muted-foreground: hsl(210 30% 90%);
+  --accent: hsl(50 100% 50%);
+  --accent-foreground: hsl(210 30% 10%);
+  --destructive: hsl(0, 97%, 46%);
+  --destructive-foreground: hsl(210 30% 10%);
+  --border: hsl(240 30% 30%);
+  --input: hsl(210 30% 15%);
+  --ring: hsl(240 80% 50%);
+  --chart-1: hsl(240 80% 50%);
+  --chart-2: hsl(50 100% 30%);
+  --chart-3: hsl(30 100% 60%);
+  --chart-4: hsl(210 30% 40%);
+  --chart-5: hsl(60 100% 50%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto;
+  }
 }
