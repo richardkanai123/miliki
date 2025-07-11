@@ -1,4 +1,9 @@
-export default function Home() {
+import { prisma } from "@/lib/prisma";
+
+export default async function Home() {
+
+  const posts = await prisma.post.findMany()
+  console.log(posts);
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
       <main className="flex flex-col items-center justify-center text-center">
