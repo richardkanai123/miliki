@@ -22,7 +22,7 @@
   --destructive: hsl(0 100% 50%);
   --destructive-foreground: hsl(210 30% 95%);
   --border: hsl(210 30% 85%);
-  --input: hsl(210 30% 95%);
+  --input: hsl(210, 59%, 50%);
   --ring: hsl(240 80% 60%);
   --chart-1: hsl(240 80% 60%);
   --chart-2: hsl(50 100% 50%);
@@ -50,13 +50,14 @@
   --destructive: hsl(0, 97%, 46%);
   --destructive-foreground: hsl(210 30% 10%);
   --border: hsl(240 30% 30%);
-  --input: hsl(210 30% 15%);
+  --input: hsl(211, 49%, 32%);
   --ring: hsl(240 80% 50%);
   --chart-1: hsl(240 80% 50%);
   --chart-2: hsl(50 100% 30%);
   --chart-3: hsl(30 100% 60%);
   --chart-4: hsl(210 30% 40%);
   --chart-5: hsl(60 100% 50%);
+   --radius: 0.5rem;
 }
 
 @theme inline {
@@ -92,7 +93,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/70;
   }
   body {
     @apply bg-background text-foreground;
@@ -102,4 +103,14 @@
   .container {
     @apply max-w-7xl mx-auto;
   }
+
+}
+
+button{
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-bold text-lg cursor-pointer hover:opacity-60 ease-in-out duration-300 transition-all;
+  @apply dark:focus:ring-offset-background;
+}
+
+a {
+  @apply  hover:underline transition-all duration-200 dark:text-sky-400 ;
 }
