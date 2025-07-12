@@ -107,10 +107,9 @@
 }
 
 button{
-  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-bold text-lg cursor-pointer hover:opacity-60 ease-in-out duration-300 transition-all;
-  @apply dark:focus:ring-offset-background;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-xl cursor-pointer hover:opacity-60 ease-in-out duration-300 transition-all;
 }
 
 a {
-  @apply  hover:underline transition-all duration-200 dark:text-sky-400 ;
+  @apply  hover:underline transition-all duration-200 dark:text-sky-200 ;
 }

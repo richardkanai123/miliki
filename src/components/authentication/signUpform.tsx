@@ -18,7 +18,10 @@ import { Card } from "../ui/card"
 import Image from "next/image"
 import Link from "next/link"
 import GoogleAuthBtn from "./GoogleAuthBtn"
+import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 const SignUpForm = () => {
+    const [showPassword, setShowPassword] = useState(false)
 
     const form = useForm({
         resolver: zodResolver(signUpSchema),
@@ -107,7 +110,16 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="Enter your password" {...field} />
+                                    <div className="w-full relative">
+                                        <Input type={showPassword ? "text" : "password"} placeholder="Enter your password" className="" {...field} />
+                                        <Button onClick={() => setShowPassword(!showPassword)} type="button" className="absolute right-2 top-1/2 transform -translate-y-1/2 outline-0 ring-0">
+                                            {showPassword ? (
+                                                <EyeOff className="h-4 w-4 text-shadow-muted" />
+                                            ) : (
+                                                <Eye className="h-4 w-4 text-shadow-muted" />
+                                            )}
+                                        </Button>
+                                    </div>
                                 </FormControl>
                                 <FormDescription>
                                     Password must be at least 8 characters and include uppercase, lowercase, number, and special character.
