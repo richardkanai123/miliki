@@ -33,7 +33,10 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  username String?
+
   @@unique([email])
+  @@unique([username])
   @@index([email, id])
   @@map("user")
 }

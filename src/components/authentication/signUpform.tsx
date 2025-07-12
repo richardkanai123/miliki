@@ -3,6 +3,7 @@ import { signUpSchema } from "@/lib/schemas/signUpSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
+import { signUp } from "@/lib/auth-client"
 import {
     Form,
     FormControl,
@@ -20,8 +21,11 @@ import Link from "next/link"
 import GoogleAuthBtn from "./GoogleAuthBtn"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false)
+    const Router = useRouter()
 
     const form = useForm({
         resolver: zodResolver(signUpSchema),
@@ -30,12 +34,39 @@ const SignUpForm = () => {
             password: "",
             confirmPassword: "",
             name: "",
-            phone: ""
+            username: "",
+            // phone: ""
         }
     })
 
-    const onSubmit = (data: z.infer<typeof signUpSchema>) => {
-        console.log(data)
+    const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
+        const { email, password, name, username } = values
+
+        const { data, error } = await signUp.email({
+            email,
+            password,
+            name,
+            username,
+            image: `https://avatar.iran.liara.run/username?username=${name}`,
+            callbackURL: '/'
+            // phone,
+        })
+
+        if (error) {
+            form.setError('root', {
+                type: 'manual',
+                message: error.message || 'An error occurred during sign up.'
+            })
+            toast.error(error.message || 'An error occurred during sign up.')
+            return
+        }
+
+        if (data) {
+            const user = data.user.email
+            toast.success(`Welcome ${user}, your account has been created successfully!`)
+            form.reset()
+            Router.replace('/')
+        }
     }
 
     return (
@@ -70,6 +101,26 @@ const SignUpForm = () => {
                                 <FormControl>
                                     <Input placeholder="eg. John Doe" {...field} />
                                 </FormControl>
+                                <FormDescription>
+                                    Please enter your full (official) name.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Username</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="eg. john_doe or johndoe1" {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    Username for your account. Must be 3-15 characters long and can only contain letters, numbers, and underscores.
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -89,7 +140,7 @@ const SignUpForm = () => {
                         )}
                     />
 
-                    <FormField
+                    {/* <FormField
                         control={form.control}
                         name="phone"
                         render={({ field }) => (
@@ -101,7 +152,7 @@ const SignUpForm = () => {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
 
                     <FormField
                         control={form.control}
@@ -146,8 +197,17 @@ const SignUpForm = () => {
                         )}
                     />
 
-                    <Button type="submit" className="w-full mt-4 py-6" >
-                        Create Account
+                    {form.formState.errors.root && (
+                        <div className="p-2 text-red-500 bg-amber-200 text-sm my-2 transition-all duration-300 ease-in-out">
+                            {form.formState.errors.root.message
+                            }
+                        </div>
+                    )}
+
+                    <Button disabled={!form.formState.isValid} type="submit" className="w-full mt-4 py-6 disabled:cursor-not-allowed" >
+                        {
+                            form.formState.isSubmitting ? "Creating..." : "Create Account"
+                        }
                     </Button>
                 </form>
             </Form>

@@ -1,18 +1,20 @@
 import { z } from "zod";
-const kenyanPhoneRegex = /^(?:\+254|254|0)(7\d{8}|1\d{8})$/;
+// const kenyanPhoneRegex = /^(?:\+254|254|0)(7\d{8}|1\d{8})$/;
 export const signUpSchema = z
 	.object({
 		name: z.string().min(4, "Name is required"),
 		email: z.email("Invalid email address"),
 		// Ensure phone number is a valid Kenyan phone number
-		phone: z
-			.string()
-			.regex(kenyanPhoneRegex, "Invalid Kenyan phone number")
-			.transform((phone) => {
-				if (phone.startsWith("0")) return `+254${phone.slice(1)}`;
-				if (phone.startsWith("254")) return `+${phone}`;
-				return phone; // Already starts with +254
-			}),
+		// phone: z
+		// 	.string()
+		// 	.regex(kenyanPhoneRegex, "Invalid Kenyan phone number")
+		// 	.transform((phone) => {
+		// 		if (phone.startsWith("0")) return `+254${phone.slice(1)}`;
+		// 		if (phone.startsWith("254")) return `+${phone}`;
+		// 		return phone; // Already starts with +254
+		// 	}),
+		username: z.string().min(3, "Username must be at least 3 characters long").max(15, "Username must be at most 15 characters long").regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+		
 		password: z
 			.string()
 			.min(8, "Password must be at least 8 characters")
