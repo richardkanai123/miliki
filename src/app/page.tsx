@@ -1,6 +1,4 @@
 import { checkAuth } from "@/lib/checkAuth";
-
-
 export default async function Home() {
   const session = await checkAuth()
 

@@ -22,6 +22,33 @@ export const auth = betterAuth({
 		maxPasswordLength: 20,
 		autoSignIn: true,
 	},
+	emailVerification: {
+		expiresIn: 60 * 60 * 3, // 3 hours
+		sendOnSignUp: true,
+		autoSignInAfterVerification: true,
+
+		sendVerificationEmail: async ({ user, url }) => {
+			const { email, name } = user;
+			const res = await fetch(
+				`${process.env.BETTER_AUTH_URL}/api/verify-user`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						email,
+						username: name,
+						verificationUrl: url,
+					
+					}),
+				}
+			);
+
+			return res.json();
+
+		}
+	},
 	socialProviders: {
 		google: {
             enabled: true,

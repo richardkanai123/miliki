@@ -1,7 +1,7 @@
 import SignOutBtn from '@/components/authentication/SignOutBtn'
 import { checkAuth } from '@/lib/checkAuth'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -16,6 +16,8 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import UpdateProfile from '@/components/authentication/UpdateProfile'
+import VerifyEmailButton from '@/components/authentication/VerifyEmailButton'
 
 const ProfilePage = async () => {
     const session = await checkAuth()
@@ -44,21 +46,22 @@ const ProfilePage = async () => {
     const name = session.user.name
     const image = session.user.image as string
     const lastSeen = session.session.updatedAt
+    const isVerified = session.user.emailVerified
 
     return (
         <div className="min-h-screen">
-            <div className="max-w-2xl mx-auto p-4 space-y-6">
+            <div className="max-w-3xl mx-auto p-4 space-y-2">
                 {/* Header */}
-                <div className="text-center pt-8 pb-4">
+                <div className="text-center p-4">
                     <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
                     <p className="text-muted-foreground">Manage your account information</p>
                 </div>
 
                 {/* Profile Card */}
                 <Card className="overflow-hidden">
-                    <CardContent className="p-4">
+                    <CardContent className="p-2">
                         {/* Avatar Section */}
-                        <div className="flex flex-col items-center space-y-4 pb-6">
+                        <div className="flex flex-col items-center space-y-2 pb-6">
                             <div className="relative group">
                                 <div className="relative">
                                     <Image
@@ -73,19 +76,21 @@ const ProfilePage = async () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="text-center space-y-1">
+                            <div className="text-center flex flex-col items-center space-y-1">
                                 <h2 className="text-xl font-semibold">{name}</h2>
                                 <Badge variant="secondary" className="text-xs">
                                     @{username}
                                 </Badge>
+
+                                <VerifyEmailButton />
                             </div>
                         </div>
 
-                        <Separator className="mb-6" />
+                        <Separator className="mb-4" />
 
                         {/* Profile Information */}
                         <div className="space-y-4">
-                            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                                 <div className="flex-shrink-0">
                                     <AtSignIcon className="h-5 w-5 text-muted-foreground" />
                                 </div>
@@ -95,7 +100,7 @@ const ProfilePage = async () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                                 <div className="flex-shrink-0">
                                     <MailIcon className="h-5 w-5 text-muted-foreground" />
                                 </div>
@@ -105,7 +110,7 @@ const ProfilePage = async () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                                 <div className="flex-shrink-0">
                                     <UserIcon className="h-5 w-5 text-muted-foreground" />
                                 </div>
@@ -114,57 +119,20 @@ const ProfilePage = async () => {
                                     <p className="text-sm text-foreground">{name}</p>
                                 </div>
                             </div>
-
-                            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                                <div className="flex-shrink-0">
-                                    <ClockIcon className="h-5 w-5 text-muted-foreground" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-muted-foreground">Last Active</p>
-                                    <p className="text-sm text-foreground">
-                                        {new Date(lastSeen).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })}
-                                    </p>
-                                </div>
-                            </div>
                         </div>
                     </CardContent>
                 </Card>
 
                 {/* Actions Card */}
                 <Card>
-                    <CardContent className="p-4 space-y-2">
-                        <Button
-                            asChild
-                            variant="ghost"
-                            className="w-full justify-between h-12"
-                        >
-                            <Link href="/settings">
-                                <div className="flex items-center space-x-3">
-                                    <SettingsIcon className="h-5 w-5" />
-                                    <span>Account Settings</span>
-                                </div>
-                                <ChevronRightIcon className="h-4 w-4" />
-                            </Link>
-                        </Button>
-
-                        <Separator />
-
-                        <div className="pt-2">
-                            <SignOutBtn />
-                        </div>
+                    <CardHeader>
+                        <h3 className="text-lg font-medium">Actions</h3>
+                    </CardHeader>
+                    <CardContent className="w-full flex flex-wrap justify-center gap-4 items-center ">
+                        <UpdateProfile />
+                        <SignOutBtn />
                     </CardContent>
                 </Card>
-
-                {/* Footer */}
-                <div className="text-center text-xs text-muted-foreground pb-8">
-                    <p>Last updated: {new Date().toLocaleDateString()}</p>
-                </div>
             </div>
         </div>
     )

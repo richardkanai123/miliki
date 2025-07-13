@@ -65,7 +65,7 @@ const SignInForm = () => {
 
             if (data) {
                 const user = data.user.name || data.user.email;
-                toast.success(`Welcome back${user}!`);
+                toast.success(`Welcome back ${user}!`);
                 form.reset();
                 form.clearErrors();
                 Router.replace("/"); // Use replace instead of push
