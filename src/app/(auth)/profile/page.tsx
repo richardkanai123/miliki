@@ -45,8 +45,6 @@ const ProfilePage = async () => {
     const email = session.user.email
     const name = session.user.name
     const image = session.user.image as string
-    const lastSeen = session.session.updatedAt
-    const isVerified = session.user.emailVerified
 
     return (
         <div className="min-h-screen">

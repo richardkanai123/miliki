@@ -225,9 +225,9 @@ const SignInForm = () => {
                                     size="sm">
                                     <Link
                                         prefetch={true}
-                                        href="/reset-password"
+                                        href="/forgot-password"
                                         className="text-primary hover:underline">
-                                        Reset Password
+                                        Forgot Password?
                                     </Link>
                                 </Button>
                             </div>

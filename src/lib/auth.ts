@@ -21,12 +21,36 @@ export const auth = betterAuth({
 		minPasswordLength: 8,
 		maxPasswordLength: 20,
 		autoSignIn: true,
+		sendResetPassword: async ({ url, user, token }) => {
+			const { name, email } = user
+			const res = await fetch(
+				`${process.env.BETTER_AUTH_URL}/api/reset-password`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						email,
+						username: name,
+						resetUrl: url,
+						token
+					}),
+				}
+			);
+
+			if(res.status !== 200) {
+				throw new Error("Failed to send reset password email");
+			}
+
+			return res.json();
+
+		},
 	},
 	emailVerification: {
 		expiresIn: 60 * 60 * 3, // 3 hours
 		sendOnSignUp: true,
 		autoSignInAfterVerification: true,
-
 		sendVerificationEmail: async ({ user, url }) => {
 			const { email, name } = user;
 			const res = await fetch(
