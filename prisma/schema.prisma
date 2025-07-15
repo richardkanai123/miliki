@@ -14,14 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-}
-
+// models
 model User {
   id            String    @id
   name          String
@@ -33,7 +26,10 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  username String?
+  username    String?
+  Property    Property[]
+  Guest       Guest[]
+  PricingRule PricingRule[]
 
   @@unique([email])
   @@unique([username])
@@ -87,4 +83,290 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+// enums
+enum PropertySizes {
+  BEDSITTER
+  ONE_BEDROOM
+  TWO_BEDROOM
+  THREE_BEDROOM
+  FOUR_BEDROOM
+  FIVE_BEDROOM
+  STUDIO
+  PENTHOUSE
+  DUPLEX
+  VILLA
+  APARTMENT
+  BUNGALOW
+  TOWNHOUSE
+  MANSION
+  CASTLE
+  CONDOMINIUM
+  LOFT
+  COTTAGE
+  FARMHOUSE
+  CABIN
+  MOBILE_HOME
+  RV
+  TINY_HOME
+  HOUSEBOAT
+  YURT
+  TENT
+  TREEHOUSE
+  IGLOO
+  SHED
+  GARAGE
+  WAREHOUSE
+  BARN
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  MAINTENANCE
+  UNAVAILABLE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentMethod {
+  CASH
+  MPESA
+  BANK_TRANSFER
+  CARD
+  CHEQUE
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum BookingUnit {
+  NIGHT
+  WEEK
+  MONTH
+}
+
+enum Services {
+  CLEANING
+  LAUNDRY
+  GARDENING
+  POOL_MAINTENANCE
+  SECURITY
+  INTERNET
+  CABLE_TV
+  PARKING
+  GYM_ACCESS
+  AIRPORT_SHUTTLE
+  TOUR_GUIDE
+  MEAL_SERVICE
+  PET_CARE
+  MAINTENANCE
+}
+
+enum BillStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model Property {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  size        PropertySizes
+  status      PropertyStatus
+  owner       User           @relation(fields: [ownerid], references: [id], onDelete: Cascade)
+  ownerid     String
+  // location
+  location    String
+  coordinates String?
+
+  // details
+  bedrooms             Int
+  bathrooms            Int
+  parking              Boolean
+  garden               Boolean
+  balcony              Boolean
+  pool                 Boolean
+  gym                  Boolean
+  AC                   Boolean
+  heating              Boolean
+  furnished            Boolean
+  petsAllowed          Boolean
+  smokingAllowed       Boolean
+  wheelchairAccessible Boolean
+  securitySystem       Boolean
+  internet             Boolean
+  cableTV              Boolean
+  laundry              Boolean
+  storage              Boolean
+  fireplace            Boolean
+  notes                String?
+  // fees
+  cleaningFee          Float
+  serviceFee           Float
+  internetFee          Float
+  securityDeposit      Float
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Booking        Booking[]
+  Bill           Bill[]
+  PricingRule    PricingRule[]
+  MonthlySummary MonthlySummary[]
+
+  @@index([ownerid, id, title])
+  @@map("properties")
+}
+
+model Guest {
+  id        String @id @default(cuid())
+  creatorId String
+
+  name             String
+  phone            String
+  email            String?
+  idNumber         String? @map("id_number") // National ID or passport number
+  address          String? // Guest's home address
+  emergencyContact String?
+  notes            String? // Additional notes about the guest
+
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relationships
+  creator User      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  // bookings          Booking[]
+  Booking Booking[]
+  Payment Payment[]
+
+  @@index([creatorId, id, name])
+  @@map("guests")
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  guestId    String
+  propertyId String
+  checkIn    DateTime
+  checkOut   DateTime
+  status     BookingStatus @default(PENDING)
+
+  // pricing
+  duration    Int // Duration in days
+  bookingUnit BookingUnit // Unit of booking (NIGHT, WEEK, MONTH)
+  totalPrice  Float // Total price for the booking
+  guestsCount Int // Number of guests for the booking
+  // auto-dates
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Cancellation info
+  cancelledAt        DateTime? @map("cancelled_at")
+  cancellationReason String?   @map("cancellation_reason")
+
+  notes String?
+
+  // Relationships
+  guest    Guest     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  property Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  Payment  Payment[]
+
+  @@index([guestId, propertyId, checkIn, checkOut])
+  @@map("bookings")
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  bookingId     String
+  amount        Decimal       @db.Decimal(10, 2)
+  status        PaymentStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  paymentMethod PaymentMethod
+  notes         String?
+  paidBy        String
+
+  // Relationships
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  payer   Guest   @relation(fields: [paidBy], references: [id], onDelete: Cascade)
+
+  @@index([bookingId, paidBy, status])
+  @@map("payments")
+}
+
+model Bill {
+  id       String     @id @default(cuid())
+  amount   Float
+  status   BillStatus @default(PENDING)
+  dueDate  DateTime
+  paidDate DateTime?
+  notes    String?
+  service  Services
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([propertyId, status, dueDate])
+  @@map("bills")
+}
+
+model PricingRule {
+  id            String   @id @default(cuid())
+  propertyId    String
+  seasonName    String
+  startDate     DateTime
+  endDate       DateTime
+  pricePerNight Decimal  @db.Decimal(10, 2)
+  pricePerWeek  Decimal  @db.Decimal(10, 2)
+  pricePerMonth Decimal  @db.Decimal(10, 2)
+  minimumStay   Int?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  updatedBy     String?
+
+  // relationships
+  updatedByUser User?    @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+  property      Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, seasonName, startDate, endDate])
+  @@map("pricingRules")
+}
+
+model MonthlySummary {
+  id               String   @id @default(cuid())
+  propertyId       String
+  year             Int
+  month            Int
+  totalRevenue     Decimal  @db.Decimal(10, 2)
+  totalExpenses    Decimal  @db.Decimal(10, 2)
+  netIncome        Decimal  @db.Decimal(10, 2)
+  occupancyRate    Decimal  @db.Decimal(5, 2)
+  daysBooked       Int
+  totalDays        Int
+  averageDailyRate Decimal  @db.Decimal(10, 2)
+  totalBookings    Int
+  calculatedAt     DateTime
+  createdAt        DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, year, month])
+  @@map("monthlySummaries")
 }
