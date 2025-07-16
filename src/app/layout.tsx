@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/navigation/Header";
 import CustomToaster from "@/components/CustomToaster";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,7 +10,8 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  display: "auto"
 });
 
 export const metadata: Metadata = {
@@ -80,7 +80,6 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
             <main className="w-full min-h-auto  max-h-fit pt-4 px-2 mx-auto">{children}</main>
             <CustomToaster />
           </ThemeProvider>
