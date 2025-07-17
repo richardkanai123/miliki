@@ -29,17 +29,28 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useSession } from "@/lib/auth-client"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser() {
+  const { data, error, isPending } = useSession()
   const { isMobile } = useSidebar()
+
+  if (isPending) {
+    return <div className="flex items-center justify-center h-full">Loading...</div>
+  }
+  if (error) {
+    return <div className="flex items-center justify-center h-full">Error: {error.message}</div>
+  }
+
+  if (!data) {
+    return <div className="flex items-center justify-center h-full">No user data</div>
+  }
+
+  const user = {
+    name: data.user.username || data.user.name || "User",
+    email: data.user.email || "user@example.com",
+    avatar: data.user.image || "/default-avatar.png",
+  }
 
   return (
     <SidebarMenu>
@@ -52,7 +63,9 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>

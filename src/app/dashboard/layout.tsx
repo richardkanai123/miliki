@@ -11,7 +11,7 @@ const DashLayout = ({ children }: { children: React.ReactNode }) => {
       <AppSidebar />
       <SidebarInset>
         <Header />
-        <div className="w-full max-h-fit flex flex-1 flex-col gap-4 p-4 ">
+        <div className="w-full max-h-fit flex flex-1 flex-col items-center justify-start">
           {children}
         </div>
       </SidebarInset >
