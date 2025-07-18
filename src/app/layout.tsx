@@ -80,7 +80,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main className="w-full min-h-auto  max-h-fit pt-4 px-2 mx-auto">{children}</main>
+            <main className="w-full min-h-auto  max-h-fit pt-4 mx-auto">{children}</main>
             <CustomToaster />
           </ThemeProvider>
         </body>

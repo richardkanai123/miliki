@@ -124,6 +124,7 @@ enum PropertySizes {
 enum PropertyStatus {
   AVAILABLE
   MAINTENANCE
+  BOOKED
   UNAVAILABLE
 }
 

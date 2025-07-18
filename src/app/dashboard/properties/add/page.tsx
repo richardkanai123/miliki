@@ -1,4 +1,5 @@
 import UnAuthenticated from '@/components/authentication/Unauthenticated'
+import AddPropertyForm from '@/components/Forms/Properties/AddProperty'
 import { checkAuth } from '@/lib/checkAuth'
 import React from 'react'
 
@@ -10,9 +11,7 @@ const AddPropertiesPage = async () => {
     }
 
     return (
-        <h1 className="text-center text-2xl font-bold mt-10">
-            Add Properties Page
-        </h1>
+        <AddPropertyForm />
     )
 }
 
