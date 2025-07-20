@@ -22,7 +22,7 @@ import {
     createPropertySchema,
     CreatePropertyInput,
 } from "@/lib/schemas/NewPropertySchema";
-import { CheckCircle, ChevronRight } from "lucide-react";
+import { CheckCircle, ChevronRight, Loader2 } from "lucide-react";
 import ProgressHeader from "./ProgressHeader";
 import {
     AmenitiesStep,
@@ -31,6 +31,9 @@ import {
     BasicInformationStep,
 } from "./steps";
 import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
+import { AddProperty } from "@/lib/actions/properties/AddProperty";
+import { useRouter } from "next/navigation";
 
 const steps = [
     {
@@ -90,6 +93,7 @@ const steps = [
 const AddPropertyForm = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [isValidating, setIsValidating] = useState(false);
+    const Router = useRouter();
 
     const form = useForm({
         resolver: zodResolver(createPropertySchema),
@@ -156,18 +160,27 @@ const AddPropertyForm = () => {
         // Validate the final step before submission
         const isValid = await validateCurrentStep();
         if (!isValid) {
-            console.log("Please complete all required fields in the current step");
+            toast.error("Please complete all required fields in the current step");
             return;
         }
 
         console.log("Submitting property:");
         try {
-            console.log("Property values:", values);
-            // Your submission logic here
+            const { message, success } = await AddProperty(values);
+            if (!success) {
+                toast.error(message || "Failed to create property");
+                return;
+            }
+            toast.success("Property created successfully!");
+            form.reset();
+            Router.push("/dashboard/properties/add-success?ptitle=" + values.title);
         } catch (error) {
-            console.error("Error creating property:", error);
+            const errorMessage =
+                error instanceof Error ? error.message : "Unknown error occurred";
+            toast.error(errorMessage);
         } finally {
-            console.log("Property creation process completed.");
+            setCurrentStep(0);
+            setIsValidating(false);
         }
     };
 
@@ -282,7 +295,7 @@ const AddPropertyForm = () => {
                         {currentStep === steps.length - 1 && (
                             <Button
                                 type="submit"
-                                disabled={isValidating}
+                                disabled={isValidating || form.formState.isSubmitting}
                                 className="flex items-center gap-2">
                                 {isValidating ? (
                                     <>
@@ -291,8 +304,12 @@ const AddPropertyForm = () => {
                                     </>
                                 ) : (
                                     <>
-                                        Add Property
-                                        <CheckCircle className="h-4 w-4" />
+                                        {form.formState.isSubmitting ? "Adding..." : "Add Property"}
+                                        {form.formState.isSubmitting ? (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <CheckCircle className="h-4 w-4" />
+                                        )}
                                     </>
                                 )}
                             </Button>
