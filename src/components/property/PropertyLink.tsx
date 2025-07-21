@@ -69,7 +69,7 @@ const PropertyLink = ({ property }: PropertyLinkProps) => {
                         </div>
 
                         {/* Content Section - Flex grow to fill remaining space */}
-                        <div className="flex-1 flex flex-col min-h-0"> {/* min-h-0 allows shrinking */}
+                        <div className="flex-1 flex flex-col min-h-0 pt-2">
                             {/* Header - Fixed Height */}
                             <div className="px-2 flex-shrink-0">
                                 <h3 className="font-semibold text-lg leading-tight transition-colors duration-200 line-clamp-2 overflow-hidden">
