@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Phone number validation regex for kenyan phone numbers
 // Allows formats like +254712345678, 0712345678, 0721234567, 012345678, etc.
-const phoneRegex = /^(?:\+254|0)(7\d{8}|1\d{7}|2\d{7})$/;
+const PhoneRegex = /^(?:\+254|254|0)(7\d{8}|1\d{8})$/;
 
 // Email validation (more permissive than default zod email)
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,7 +29,7 @@ export const createGuestSchema = z
 			.min(10, "Phone number must be at least 10 digits")
 			.max(15, "Phone number must not exceed 15 digits")
 			.regex(
-				phoneRegex,
+				PhoneRegex,
 				"Please provide a valid phone number (e.g., +1234567890 or 1234567890)"
 			)
 			.transform((val) => val.replace(/\s+/g, "")), // Remove spaces

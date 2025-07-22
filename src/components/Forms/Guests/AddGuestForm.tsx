@@ -40,6 +40,7 @@ import {
 import { toast } from 'sonner'
 import { createGuestSchema, CreateGuestSchemaType } from '@/lib/schemas/NewGuestSchema'
 import { useRouter } from 'next/navigation'
+import { addGuest } from '@/lib/actions/guests/AddGuest'
 
 const AddGuestForm = () => {
     const router = useRouter()
@@ -61,14 +62,11 @@ const AddGuestForm = () => {
 
     const onSubmit = async (values: CreateGuestSchemaType) => {
         try {
-            // Simulate API call - replace with actual action
-            console.log('Submitting guest:', values)
-
-            // const { message, success } = await AddGuest(values)
-            // if (!success) {
-            //     toast.error(message || 'Failed to create guest')
-            //     return
-            // }
+            const { message, success } = await addGuest(values)
+            if (!success) {
+                toast.error(message || 'Failed to create guest')
+                return
+            }
 
             toast.success('Guest added successfully!')
             form.reset()
@@ -399,7 +397,7 @@ const AddGuestForm = () => {
                         >
                             <Button
                                 type="submit"
-                                disabled={form.formState.isSubmitting}
+                                disabled={form.formState.isSubmitting || !form.formState.isValid}
                                 className="flex items-center gap-2 min-w-[140px]"
                             >
                                 {form.formState.isSubmitting ? (

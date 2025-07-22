@@ -47,16 +47,16 @@ export const addGuest = async (guest: CreateGuestSchemaType) => {
         const existingGuest = await prisma.guest.findFirst({
             where: {
                 OR: [
-                    { phone: GuestData.phone },
-                    { email: GuestData.email },
-                ],
-            },
-        });
+					{ phone: GuestData.phone },
+					{ idNumber: GuestData.idNumber },
+				],
+			},
+		});
 
 		if (existingGuest) {
 			return {
 				success: false,
-				message: "A guest with this phone number or email already exists.",
+				message: "A guest with this phone number or ID number already exists.",
 				guest: existingGuest,
 			};
 		}
@@ -73,7 +73,7 @@ export const addGuest = async (guest: CreateGuestSchemaType) => {
 
         const message = `Guest ${newGuest.name} added successfully.`;
         
-        revalidateTag("guests");
+        revalidateTag("user-guests");
 
 		return { success: true, message, guest: newGuest };
 	} catch (error) {
