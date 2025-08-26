@@ -2,13 +2,14 @@
 
 import { Suspense } from "react";
 import {
-  BanknoteArrowUp,
-  Map,
   BookmarkIcon as Bookmark,
   LayoutDashboard,
   UsersRoundIcon as Users,
-  ReceiptText,
   Building2,
+  TrendingUp,
+  BarChart3,
+  FileText,
+  CreditCard,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -25,17 +26,22 @@ import {
 } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
+import Link from "next/link";
 
 const NavData = {
   navMain: [
     {
-      title: "Overview",
-      url: "#",
+      title: "Dashboard",
+      url: "/dashboard",
       icon: LayoutDashboard,
       isActive: true,
       items: [
         {
-          title: "Today's",
+          title: "Overview",
+          url: "/dashboard",
+        },
+        {
+          title: "Today's Summary",
           url: "/dashboard?duration=today",
         },
         {
@@ -43,16 +49,12 @@ const NavData = {
           url: "/dashboard?duration=this-week",
         },
         {
-          title: "Last Week",
-          url: "/dashboard?duration=last-week",
-        },
-        {
           title: "This Month",
           url: "/dashboard?duration=this-month",
         },
         {
-          title: "Last Month",
-          url: "/dashboard?duration=last-month",
+          title: "Financial Summary",
+          url: "/dashboard/financial",
         },
       ],
     },
@@ -70,8 +72,16 @@ const NavData = {
           url: "/dashboard/properties/add",
         },
         {
-          title: "Query Properties",
-          url: "/dashboard/properties/query",
+          title: "Property Analytics",
+          url: "/dashboard/properties/analytics",
+        },
+        {
+          title: "Maintenance Schedule",
+          url: "/dashboard/properties/maintenance",
+        },
+        {
+          title: "Property Photos",
+          url: "/dashboard/properties/photos",
         },
       ],
     },
@@ -97,6 +107,14 @@ const NavData = {
           url: "/dashboard/bookings?status=active",
         },
         {
+          title: "Check-ins Today",
+          url: "/dashboard/bookings?type=checkin",
+        },
+        {
+          title: "Check-outs Today",
+          url: "/dashboard/bookings?type=checkout",
+        },
+        {
           title: "Cancelled",
           url: "/dashboard/bookings?status=cancelled",
         },
@@ -115,24 +133,73 @@ const NavData = {
           title: "Add Guest",
           url: "/dashboard/guests/add",
         },
+        {
+          title: "Guest Directory",
+          url: "/dashboard/guests/directory",
+        },
+        {
+          title: "Guest Reviews",
+          url: "/dashboard/guests/reviews",
+        },
+      ],
+    },
+    {
+      title: "Finances",
+      url: "/dashboard/finances",
+      icon: CreditCard,
+      items: [
+        {
+          title: "Income Overview",
+          url: "/dashboard/finances/income",
+        },
+        {
+          title: "Expenses",
+          url: "/dashboard/finances/expenses",
+        },
+        {
+          title: "Rent Collection",
+          url: "/dashboard/finances/rent",
+        },
+        {
+          title: "M-Pesa Transactions",
+          url: "/dashboard/finances/mpesa",
+        },
+        {
+          title: "Bank Transfers",
+          url: "/dashboard/finances/bank",
+        },
+        {
+          title: "Tax Reports",
+          url: "/dashboard/finances/tax",
+        },
       ],
     },
   ],
   Reports: [
     {
-      name: "Payments",
-      url: "/dashboard/reports/payments",
-      icon: BanknoteArrowUp,
+      name: "Occupancy Reports",
+      url: "/dashboard/reports/occupancy",
+      icon: BarChart3,
     },
     {
-      name: "Bills",
-      url: "/dashboard/reports/bills",
-      icon: ReceiptText,
+      name: "Revenue Analytics",
+      url: "/dashboard/reports/revenue",
+      icon: TrendingUp,
     },
     {
-      name: "Pricing",
-      url: "/dashboard/pricing",
-      icon: Map,
+      name: "Guest Statistics",
+      url: "/dashboard/reports/guests",
+      icon: Users,
+    },
+    {
+      name: "Property Performance",
+      url: "/dashboard/reports/properties",
+      icon: Building2,
+    },
+    {
+      name: "Maintenance Logs",
+      url: "/dashboard/reports/maintenance",
+      icon: FileText,
     },
   ],
 };
@@ -146,19 +213,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar
-      className=" transition-all duration-300 ease-in-out 
-    border-r border-sidebar-border 
-    shadow-lg backdrop-blur-sm
-    data-[state=collapsed]:shadow-none
-    data-[state=expanded]:shadow-xl "
       collapsible="icon"
       {...props}>
 
       {
         isPending && !data ? (
-          <SidebarHeader className="border-b border-sidebar-border bg-gradient-to-r from-primary/5 to-primary/10 list-none">
+          <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/10">
             <SidebarMenuItem>
-              <SidebarMenuButton className="group relative text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/80 active:bg-sidebar-accent transition-all duration-200 rounded-lg border border-transparent hover:border-sidebar-border/50 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-sidebar-ring">
+              <SidebarMenuButton className="group relative">
                 <div className="w-8 h-8 bg-sidebar-accent rounded-full animate-pulse"></div>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -166,16 +228,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         )
           : (
             <>
-              <SidebarHeader className="border-b border-sidebar-border bg-gradient-to-r from-primary/5 to-primary/10 list-none">
+              <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/10 p-2 list-none">
                 <SidebarMenuItem>
-                  <SidebarMenuButton className="group relative text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/80 active:bg-sidebar-accent transition-all duration-200  rounded-lg border border-transparent hover:border-sidebar-border/50 hover:shadow-sm focus-visible:ring-2  focus-visible:ring-sidebar-ring">
+                  <SidebarMenuButton className="group relative">
                     <div className="relative">
                       <Image
                         src="/playstore.png"
                         alt="Miliki"
                         width={32}
                         height={32}
-                        className="mr-3 rounded-lg shadow-sm border border-sidebar-border"
+                        className="mr-3 rounded-lg border border-sidebar-border"
                       />
                     </div>
                     <span className="font-semibold text-lg tracking-tight">Miliki</span>
@@ -201,7 +263,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <NavProjects projects={NavData.Reports} />
                 </div>
               </SidebarContent>
-              <SidebarFooter className="border-t border-sidebar-border bg-gradient-to-t from-sidebar-accent/10 to-transparent p-2">
+              <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/10 p-2">
+                <div className="space-y-2 group-data-[collapsible=icon]:hidden">
+                  <div className="px-3">
+                    <h2 className="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider mb-2">
+                      Support
+                    </h2>
+                    <div className="space-y-1 list-none">
+                      <SidebarMenuItem>
+                        <SidebarMenuButton asChild>
+                          <Link href="/help" className="text-xs">
+                            <FileText className="w-3 h-3" />
+                            <span>Help Center</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton asChild>
+                          <Link href="/contact" className="text-xs">
+                            <Users className="w-3 h-3" />
+                            <span>Contact Support</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </div>
+                  </div>
+                </div>
                 <Suspense
                   fallback={
                     <div className="flex items-center space-x-3 p-2 rounded-lg animate-pulse">

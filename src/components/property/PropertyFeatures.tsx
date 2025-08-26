@@ -57,7 +57,7 @@ const PropertyFeatures = ({
             condition: bathrooms > 0,
             icon: Bath,
             label: `${bathrooms} Bathroom${bathrooms > 1 ? 's' : ''}`,
-            shortLabel: "Bathsrms",
+            shortLabel: "Baths",
             color: 'text-cyan-700 dark:text-cyan-300',
             bgColor: 'bg-cyan-50 dark:bg-cyan-500/10',
             hoverBg: 'hover:bg-cyan-100 dark:hover:bg-cyan-500/20',
