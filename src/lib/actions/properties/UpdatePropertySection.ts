@@ -170,6 +170,7 @@ export const updatePropertyFees = async (propertyId: string, data: EditFeesInput
 
         revalidateTag("properties");
         revalidateTag("property");
+        revalidateTag("property-by-id");
 
         return { success: true, message: "Fees and notes updated successfully" };
     } catch (error) {

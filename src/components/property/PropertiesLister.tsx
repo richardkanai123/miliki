@@ -13,7 +13,6 @@ interface PropertiesListerProps {
     showSearch?: boolean
     showFilters?: boolean
     emptyStateMessage?: string
-    className?: string
 }
 
 const PropertiesLister = ({
@@ -21,7 +20,6 @@ const PropertiesLister = ({
     showSearch = true,
     showFilters = true,
     emptyStateMessage = "No properties found.",
-    className = ""
 }: PropertiesListerProps) => {
     const {
         searchQuery,
@@ -41,7 +39,7 @@ const PropertiesLister = ({
     } = usePropertyFilters({ properties })
 
     return (
-        <div className={`space-y-6 ${className}`}>
+        <div className={`space-y-2 relative`}>
             {/* Filters Bar */}
             <PropertyFiltersBar
                 searchQuery={searchQuery}

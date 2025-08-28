@@ -3,6 +3,7 @@ import { checkAuth } from '@/lib/checkAuth'
 import { GetPropertyById } from '@/lib/actions/properties/getSpecificProperty'
 import ErrorAlert from '@/components/ErrorAlert'
 import PropertyDetails from '@/components/property/PropertyDetails'
+import { Suspense } from 'react'
 
 
 const PropertyPage = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -21,7 +22,11 @@ const PropertyPage = async ({ params }: { params: Promise<{ id: string }> }) => 
 
     return (
         <div className='w-full flex items-center gap-2 justify-center-safe flex-wrap p-4'>
-            <PropertyDetails property={property} />
+            <div className='w-full'>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <PropertyDetails property={property} />
+                </Suspense>
+            </div>
         </div>
     )
 }

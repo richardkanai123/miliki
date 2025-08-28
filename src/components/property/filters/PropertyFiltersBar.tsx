@@ -52,12 +52,11 @@ const PropertyFiltersBar = ({
     onSortChange,
     hasActiveFilters,
     onClearFilters,
-    className = ""
 }: PropertyFiltersBarProps) => {
     if (!showSearch && !showFilters) return null
 
     return (
-        <Card className={className}>
+        <Card className="sticky top-10 left-0 w-full rounded-none">
             <CardContent className="p-4">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Search */}
@@ -94,7 +93,7 @@ const PropertyFiltersBar = ({
                                     onClick={onClearFilters}
                                     className="text-muted-foreground hover:text-foreground"
                                 >
-                                    <X className="w-4 h-4 mr-1" />
+                                    <X className="size-4 mr-1" />
                                     Clear
                                 </Button>
                             )}

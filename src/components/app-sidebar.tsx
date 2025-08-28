@@ -75,14 +75,6 @@ const NavData = {
           title: "Property Analytics",
           url: "/dashboard/properties/analytics",
         },
-        {
-          title: "Maintenance Schedule",
-          url: "/dashboard/properties/maintenance",
-        },
-        {
-          title: "Property Photos",
-          url: "/dashboard/properties/photos",
-        },
       ],
     },
     {
@@ -91,20 +83,12 @@ const NavData = {
       icon: Bookmark,
       items: [
         {
-          title: "All Bookings",
+          title: "View Bookings",
           url: "/dashboard/bookings",
         },
         {
           title: "New Booking",
           url: "/dashboard/bookings/add",
-        },
-        {
-          title: "Upcoming",
-          url: "/dashboard/bookings?status=upcoming",
-        },
-        {
-          title: "Active",
-          url: "/dashboard/bookings?status=active",
         },
         {
           title: "Check-ins Today",
@@ -114,10 +98,6 @@ const NavData = {
           title: "Check-outs Today",
           url: "/dashboard/bookings?type=checkout",
         },
-        {
-          title: "Cancelled",
-          url: "/dashboard/bookings?status=cancelled",
-        },
       ],
     },
     {
@@ -126,16 +106,12 @@ const NavData = {
       icon: Users,
       items: [
         {
-          title: "All Guests",
+          title: "View Guests",
           url: "/dashboard/guests",
         },
         {
           title: "Add Guest",
           url: "/dashboard/guests/add",
-        },
-        {
-          title: "Guest Directory",
-          url: "/dashboard/guests/directory",
         },
         {
           title: "Guest Reviews",
@@ -167,10 +143,6 @@ const NavData = {
         {
           title: "Bank Transfers",
           url: "/dashboard/finances/bank",
-        },
-        {
-          title: "Tax Reports",
-          url: "/dashboard/finances/tax",
         },
       ],
     },
@@ -218,92 +190,57 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       {
         isPending && !data ? (
-          <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/10">
+          <SidebarHeader>
             <SidebarMenuItem>
-              <SidebarMenuButton className="group relative">
-                <div className="w-8 h-8 bg-sidebar-accent rounded-full animate-pulse"></div>
+              <SidebarMenuButton>
+                <div className="h-8 w-8 animate-pulse rounded-full bg-sidebar-accent"></div>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarHeader>
         )
           : (
             <>
-              <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/10 p-2 list-none">
+              <SidebarHeader className="p-0 list-none">
                 <SidebarMenuItem>
-                  <SidebarMenuButton className="group relative">
-                    <div className="relative">
-                      <Image
-                        src="/playstore.png"
-                        alt="Miliki"
-                        width={32}
-                        height={32}
-                        className="mr-3 rounded-lg border border-sidebar-border"
-                      />
-                    </div>
-                    <span className="font-semibold text-lg tracking-tight">Miliki</span>
+                  <SidebarMenuButton size="lg" asChild>
+                    <Link href="/dashboard">
+                      <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                        <Image
+                          src="/playstore.png"
+                          alt="Miliki"
+                          width={32}
+                          height={32}
+                          className="rounded-lg"
+                        />
+                      </div>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">Miliki</span>
+                        <span className="truncate text-xs">Property Management</span>
+                      </div>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarHeader>
-              <SidebarContent className="p-2 space-y-4">
-                <div className="space-y-2">
-                  <div className="px-3 mb-2">
-                    <h2 className="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider">
-                      Main Navigation
-                    </h2>
-                  </div>
-                  <NavMain items={NavData.navMain} />
-                </div>
-
-                <div className="space-y-2">
-                  <div className="px-3 mb-2">
-                    <h2 className="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider">
-                      Reports & Analytics
-                    </h2>
-                  </div>
-                  <NavProjects projects={NavData.Reports} />
-                </div>
+              <SidebarContent>
+                <NavMain items={NavData.navMain} />
+                <NavProjects projects={NavData.Reports} />
               </SidebarContent>
-              <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/10 p-2">
-                <div className="space-y-2 group-data-[collapsible=icon]:hidden">
-                  <div className="px-3">
-                    <h2 className="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider mb-2">
-                      Support
-                    </h2>
-                    <div className="space-y-1 list-none">
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link href="/help" className="text-xs">
-                            <FileText className="w-3 h-3" />
-                            <span>Help Center</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link href="/contact" className="text-xs">
-                            <Users className="w-3 h-3" />
-                            <span>Contact Support</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </div>
-                  </div>
-                </div>
-                <Suspense
-                  fallback={
-                    <div className="flex items-center space-x-3 p-2 rounded-lg animate-pulse">
-                      <div className="w-8 h-8 bg-sidebar-accent rounded-full"></div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-3 bg-sidebar-accent rounded w-3/4"></div>
-                        <div className="h-2 bg-sidebar-accent/50 rounded w-1/2"></div>
+              <SidebarFooter>
+                <Suspense fallback={
+                  <SidebarMenuItem>
+                    <SidebarMenuButton>
+                      <div className="h-8 w-8 animate-pulse rounded-full bg-sidebar-accent"></div>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <div className="h-3 w-3/4 animate-pulse rounded bg-sidebar-accent"></div>
+                        <div className="h-2 w-1/2 animate-pulse rounded bg-sidebar-accent/50"></div>
                       </div>
-                    </div>
-                  }>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                }>
                   <NavUser />
                 </Suspense>
               </SidebarFooter>
             </>
-
           )}
     </Sidebar>
   );

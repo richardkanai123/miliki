@@ -57,7 +57,6 @@ const getCachedProperty = unstable_cache(
 	["property-by-id"],
 	{
 		tags: ["property"],
-		revalidate: 300, // 5 minutes cache
 	}
 );
 
@@ -84,7 +83,7 @@ export const GetPropertyById = async (
 			};
 		}
 
-		const userId = session.user.id;
+		const userId = session.session.userId;
 
 		// 3. Database query with caching
 		const property = await getCachedProperty(id);

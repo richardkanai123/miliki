@@ -124,6 +124,8 @@ export const UpdateProperty = async (propertyId: string, property: CreatePropert
 
 		revalidateTag("properties");
 		revalidateTag(`user-properties-${userId}`);
+		revalidateTag(`property-by-id`);
+		revalidateTag("property");
 
 		return {
 			success: true,

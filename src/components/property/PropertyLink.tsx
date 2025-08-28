@@ -71,7 +71,7 @@ const PropertyLink = ({ property }: PropertyLinkProps) => {
                         </Link>
                         <div className="flex items-center gap-1.5 mt-2">
                             <MapPin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                            <span className="text-sm text-muted-foreground truncate">{location}</span>
+                            <span className="text-sm text-muted-foreground truncate">{location.length > 20 ? location.slice(0, 20) + '...' : location}</span>
                         </div>
                         <div className="flex items-center gap-2 mt-2 flex-wrap">
                             <Badge variant="outline" className="text-sm">
@@ -98,11 +98,11 @@ const PropertyLink = ({ property }: PropertyLinkProps) => {
                         <div className="flex items-center gap-6 text-base text-muted-foreground">
                             <div className="flex items-center gap-2">
                                 <Bed className="w-5 h-5" />
-                                <span className="font-medium">{bedrooms} bed{bedrooms !== 1 ? 's' : ''}</span>
+                                <span className="font-medium">{bedrooms}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Bath className="w-5 h-5" />
-                                <span className="font-medium">{bathrooms} bath{bathrooms !== 1 ? 's' : ''}</span>
+                                <span className="font-medium">{bathrooms}</span>
                             </div>
                         </div>
                     </div>
@@ -126,17 +126,11 @@ const PropertyLink = ({ property }: PropertyLinkProps) => {
                 </div>
 
                 {/* Quick Actions */}
-                <div className="flex gap-3 pt-5 mt-auto border-t border-border/50">
+                <div className="flex gap-2 pt-2 mt-auto border-t border-border/50">
                     <Link href={`/dashboard/properties/${id}`} className="flex-1">
-                        <Button variant="outline" size="default" className="w-full justify-center">
+                        <Button size="default" className="w-full justify-center">
                             <EyeIcon className="w-4 h-4 mr-2" />
                             View
-                        </Button>
-                    </Link>
-                    <Link href={`/dashboard/properties/${id}/edit`} className="flex-1">
-                        <Button variant="outline" size="default" className="w-full justify-center">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
                         </Button>
                     </Link>
                 </div>

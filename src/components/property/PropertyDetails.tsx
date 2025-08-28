@@ -26,6 +26,7 @@ import {
 import NotesEditDialog from './EditDialogs/NotesEditDialog'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import DeletePropertyBtn from './DeletePropertyBtn'
 
 interface PropertyDetailsProps {
     property: Property;
@@ -154,8 +155,10 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                         {title}
                     </h2>
                     <div className="flex items-center text-muted-foreground">
-                        <MapPin className="w-4 h-4" />
-                        <span className='text-sm'>{location}</span>
+                        <MapPin className="size-3 mr-1" />
+                        <span className='text-xs'>
+                            {location}
+                        </span>
                         {coordinates && (
                             <span className="text-xs opacity-70">({coordinates})</span>
                         )}
@@ -175,6 +178,8 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                             Edit
                         </Link>
                     </Button>
+
+                    <DeletePropertyBtn propertyId={id} propertyTitle={title} />
                 </div>
             </div>
 
@@ -239,86 +244,93 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                             </div>
                         </CardContent>
                     </Card>
-                )}
+                )
+            }
 
             {/* Policies */}
-            {policies.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center gap-2">
-                                <FileText className="w-5 h-5" />
-                                Policies
-                            </CardTitle>
-                            <PoliciesEditDialog property={property} />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {policies.map(({ icon: Icon, label }) => (
-                                <div
-                                    key={label}
-                                    className="flex items-center gap-3 p-3 rounded-lg border border-border/50"
-                                >
-                                    <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/20">
-                                        {Icon && React.createElement(Icon as any, { className: "w-3.5 h-3.5 text-blue-600 dark:text-blue-400" })}
+            {
+                policies.length > 0 && (
+                    <Card>
+                        <CardHeader>
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="flex items-center gap-2">
+                                    <FileText className="w-5 h-5" />
+                                    Policies
+                                </CardTitle>
+                                <PoliciesEditDialog property={property} />
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {policies.map(({ icon: Icon, label }) => (
+                                    <div
+                                        key={label}
+                                        className="flex items-center gap-3 p-3 rounded-lg border border-border/50"
+                                    >
+                                        <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/20">
+                                            {Icon && React.createElement(Icon as any, { className: "w-3.5 h-3.5 text-blue-600 dark:text-blue-400" })}
+                                        </div>
+                                        <span className="text-sm font-medium text-foreground">{label}</span>
                                     </div>
-                                    <span className="text-sm font-medium text-foreground">{label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                )
+            }
 
             {/* Fees */}
-            {fees.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center gap-2">
-                                <DollarSign className="w-5 h-5" />
-                                Fees & Deposits
-                            </CardTitle>
-                            <FeesEditDialog property={property} />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-3">
-                            {fees.map(({ label, amount }) => (
-                                <div key={label} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                                    <span className="text-sm font-medium text-foreground">{label}</span>
-                                    <span className="text-sm font-semibold text-foreground">
-                                        {formatCurrency(amount)}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
+            {
+                fees.length > 0 && (
+                    <Card>
+                        <CardHeader>
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="flex items-center gap-2">
+                                    <DollarSign className="w-5 h-5" />
+                                    Fees & Deposits
+                                </CardTitle>
+                                <FeesEditDialog property={property} />
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                {fees.map(({ label, amount }) => (
+                                    <div key={label} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                                        <span className="text-sm font-medium text-foreground">{label}</span>
+                                        <span className="text-sm font-semibold text-foreground">
+                                            {formatCurrency(amount)}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                )
+            }
 
             {/* Additional Notes */}
-            {notes && (
+            {
+                notes && (
 
-                <Card>
-                    <CardHeader >
-                        <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center gap-2">
-                                <FileText className="w-5 h-5" />
-                                Additional Notes
-                            </CardTitle>
+                    <Card>
+                        <CardHeader >
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="flex items-center gap-2">
+                                    <FileText className="w-5 h-5" />
+                                    Additional Notes
+                                </CardTitle>
 
-                            <NotesEditDialog property={property} />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                            {notes}
-                        </p>
-                    </CardContent>
-                </Card>
-            )}
+                                <NotesEditDialog property={property} />
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                {notes}
+                            </p>
+                        </CardContent>
+                    </Card>
+                )
+            }
 
             {/* Metadata */}
 
@@ -352,7 +364,7 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
                     </div>
                 </CardContent>
             </Card>
-        </motion.div>
+        </motion.div >
     );
 };
 

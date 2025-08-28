@@ -20,7 +20,8 @@ export const updatePropertyNotes = async (propertyId: string, notes: string) => 
         // Validate input data
         const parsedData = notesSchema.safeParse({ notes });
         if (!parsedData.success) {
-            throw new Error("Invalid data: " + parsedData.error.errors[0].message);
+            // ZodError has .issues, not .errors
+            throw new Error("Invalid data: " + (parsedData.error.issues[0]?.message ?? "Unknown validation error"));
         }
 
         const userId = session.user.id;
@@ -49,7 +50,8 @@ export const updatePropertyNotes = async (propertyId: string, notes: string) => 
         // Revalidate cache
         revalidateTag("properties");
         revalidateTag(`user-properties-${userId}`);
-        revalidateTag(`property-${propertyId}`);
+        revalidateTag(`property-by-id`);
+        revalidateTag("property");
 
         return {
             success: true,

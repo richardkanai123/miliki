@@ -21,7 +21,7 @@ const EditPropertyPage = async ({ params }: { params: Promise<{ id: string }> })
     }
 
     if (!property) {
-        return <ErrorAlert errorMessage="Property not found" />
+        return <ErrorAlert errorMessage={message || "Property not found"} />
     }
 
     return (
