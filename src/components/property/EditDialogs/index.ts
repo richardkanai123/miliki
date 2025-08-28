@@ -1,0 +1,5 @@
+export { default as BasicInfoEditDialog } from './BasicInfoEditDialog'
+export { default as AmenitiesEditDialog } from './AmenitiesEditDialog'
+export { default as PoliciesEditDialog } from './PoliciesEditDialog'
+export { default as FeesEditDialog } from './FeesEditDialog'
+export { default as NotesEditDialog } from './NotesEditDialog'

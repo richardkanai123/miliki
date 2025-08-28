@@ -22,7 +22,7 @@ import {
     createPropertySchema,
     CreatePropertyInput,
 } from "@/lib/schemas/NewPropertySchema";
-import { CheckCircle, ChevronRight, Loader2 } from "lucide-react";
+import { CheckCircle, ChevronRight, Loader2, ArrowLeft, Save } from "lucide-react";
 import ProgressHeader from "./ProgressHeader";
 import {
     AmenitiesStep,
@@ -32,14 +32,14 @@ import {
 } from "./steps";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { AddProperty } from "@/lib/actions/properties/AddProperty";
+import { UpdateProperty } from "@/lib/actions/properties/UpdateProperty";
 import { useRouter } from "next/navigation";
 import {
-    loadFormDraft,
+    debouncedSaveFormDraft,
     clearFormDraft,
-    hasFormDraft,
-    debouncedSaveFormDraft
 } from "@/lib/utils/formPersistence";
+import { Property } from "@/generated/prisma";
+import Link from "next/link";
 
 const steps = [
     {
@@ -96,80 +96,75 @@ const steps = [
     },
 ];
 
-const AddPropertyForm = () => {
+interface EditPropertyFormProps {
+    property: Property;
+}
+
+const EditPropertyForm = ({ property }: EditPropertyFormProps) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [isValidating, setIsValidating] = useState(false);
-    const [hasDraft, setHasDraft] = useState(false);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const Router = useRouter();
-
-    useEffect(() => {
-        if (hasFormDraft()) {
-            setHasDraft(true);
-        }
-    }, []);
 
     const form = useForm({
         resolver: zodResolver(createPropertySchema),
         defaultValues: {
-            title: "",
-            description: "",
-            size: "ONE_BEDROOM",
-            status: "AVAILABLE",
-            location: "",
-            coordinates: "",
-            bedrooms: 1,
-            bathrooms: 1,
-            parking: false,
-            garden: false,
-            balcony: false,
-            pool: false,
-            gym: false,
-            AC: false,
-            heating: false,
-            furnished: false,
-            petsAllowed: false,
-            smokingAllowed: false,
-            wheelchairAccessible: false,
-            securitySystem: false,
-            internet: false,
-            cableTV: false,
-            laundry: false,
-            storage: false,
-            fireplace: false,
-            notes: "",
-            cleaningFee: 0,
-            serviceFee: 0,
-            internetFee: 0,
-            securityDeposit: 0,
+            title: property.title || "",
+            description: property.description || "",
+            size: property.size || "ONE_BEDROOM",
+            status: property.status || "AVAILABLE",
+            location: property.location || "",
+            coordinates: property.coordinates || "",
+            bedrooms: property.bedrooms || 1,
+            bathrooms: property.bathrooms || 1,
+            parking: property.parking || false,
+            garden: property.garden || false,
+            balcony: property.balcony || false,
+            pool: property.pool || false,
+            gym: property.gym || false,
+            AC: property.AC || false,
+            heating: property.heating || false,
+            furnished: property.furnished || false,
+            petsAllowed: property.petsAllowed || false,
+            smokingAllowed: property.smokingAllowed || false,
+            wheelchairAccessible: property.wheelchairAccessible || false,
+            securitySystem: property.securitySystem || false,
+            internet: property.internet || false,
+            cableTV: property.cableTV || false,
+            laundry: property.laundry || false,
+            storage: property.storage || false,
+            fireplace: property.fireplace || false,
+            notes: property.notes || "",
+            cleaningFee: property.cleaningFee || 0,
+            serviceFee: property.serviceFee || 0,
+            internetFee: property.internetFee || 0,
+            securityDeposit: property.securityDeposit || 0,
         },
         mode: "onChange",
     });
 
-    // Auto-save form data when it changes
-    React.useEffect(() => {
-        const subscription = form.watch((data) => {
-            debouncedSaveFormDraft(data as Partial<CreatePropertyInput>, currentStep);
+    // Track changes to show unsaved indicator
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            setHasUnsavedChanges(true);
+            // Auto-save draft for edit form as well
+            debouncedSaveFormDraft(form.getValues() as Partial<CreatePropertyInput>, currentStep);
         });
         return () => subscription.unsubscribe();
     }, [form, currentStep]);
 
-    // Load draft data if available
-    const loadDraft = () => {
-        const { data, currentStep: savedStep } = loadFormDraft();
-        if (data) {
-            form.reset(data);
-            setCurrentStep(savedStep);
-            setHasDraft(false);
-            toast.success("Draft loaded successfully!");
-        }
-    };
+    // Warn user about unsaved changes when leaving
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
 
-    // Discard draft
-    const discardDraft = () => {
-        clearFormDraft();
-        setHasDraft(false);
-        toast.info("Draft discarded");
-    };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [hasUnsavedChanges]);
 
     const validateCurrentStep = async () => {
         const fieldsToValidate = steps[currentStep].fields;
@@ -203,65 +198,96 @@ const AddPropertyForm = () => {
             return;
         }
 
-        console.log("Submitting property:");
         try {
-            const { message, success } = await AddProperty(values);
+            const { message, success } = await UpdateProperty(property.id, values);
             if (!success) {
-                toast.error(message || "Failed to create property");
+                toast.error(message || "Failed to update property");
                 return;
             }
-            toast.success("Property created successfully!");
-            clearFormDraft(); // Clear the draft after successful submission
-            Router.push(`/dashboard/properties/add-success?ptitle=${encodeURIComponent(values.title)}`);
-            form.reset();
+            toast.success("Property updated successfully!");
+            setHasUnsavedChanges(false);
+            clearFormDraft(); // Clear any auto-saved drafts
+            Router.push(`/dashboard/properties/${property.id}?updated=true`);
         } catch (error) {
             const errorMessage =
                 error instanceof Error ? error.message : "Unknown error occurred";
             toast.error(errorMessage);
         } finally {
-            setCurrentStep(0);
+            setIsValidating(false);
+        }
+    };
+
+    // Quick save function for intermediate saves
+    const quickSave = async () => {
+        setIsValidating(true);
+        try {
+            const values = form.getValues();
+            const { message, success } = await UpdateProperty(property.id, values as CreatePropertyInput);
+            if (!success) {
+                toast.error(message || "Failed to save changes");
+                return;
+            }
+            toast.success("Changes saved!");
+            setHasUnsavedChanges(false);
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : "Failed to save changes";
+            toast.error(errorMessage);
+        } finally {
             setIsValidating(false);
         }
     };
 
     return (
         <div className="w-full mx-auto space-y-4 items-center content-center p-2 max-w-5xl">
-            {/* Draft notification */}
-            {hasDraft && (
-                <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                                Found a saved draft from your previous session
-                            </span>
-                        </div>
-                        <div className="flex gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={loadDraft}
-                                className="text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700"
-                            >
-                                Load Draft
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={discardDraft}
-                                className="text-gray-600 dark:text-gray-400"
-                            >
-                                Discard
-                            </Button>
-                        </div>
+            {/* Header with navigation and save status */}
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                    <Button variant="ghost" size="sm" asChild>
+                        <Link href={`/dashboard/properties/${property.id}`}>
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Property
+                        </Link>
+                    </Button>
+                    <div className="h-6 w-px bg-gray-300 dark:bg-gray-600" />
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                            Edit Property
+                        </h1>
+                        <p className="text-sm text-muted-foreground">{property.title}</p>
                     </div>
                 </div>
-            )}
+
+                <div className="flex items-center gap-2">
+                    {hasUnsavedChanges && (
+                        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                            <span className="text-sm font-medium">Unsaved changes</span>
+                        </div>
+                    )}
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={quickSave}
+                        disabled={isValidating || !hasUnsavedChanges}
+                        className="flex items-center gap-2"
+                    >
+                        {isValidating ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                            <Save className="w-4 h-4" />
+                        )}
+                        Quick Save
+                    </Button>
+                </div>
+            </div>
+
             <ProgressHeader
                 currentStep={currentStep}
                 steps={steps}
+                title="Edit Property"
+                description="Update your property information"
             />
 
             {/* Form Content */}
@@ -364,7 +390,7 @@ const AddPropertyForm = () => {
                             </Button>
                         )}
 
-                        {/* submit Button */}
+                        {/* Update Button */}
                         {currentStep === steps.length - 1 && (
                             <Button
                                 type="submit"
@@ -377,7 +403,7 @@ const AddPropertyForm = () => {
                                     </>
                                 ) : (
                                     <>
-                                        {form.formState.isSubmitting ? "Adding..." : "Add Property"}
+                                        {form.formState.isSubmitting ? "Updating..." : "Update Property"}
                                         {form.formState.isSubmitting ? (
                                             <Loader2 className="h-4 w-4 animate-spin" />
                                         ) : (
@@ -394,4 +420,4 @@ const AddPropertyForm = () => {
     );
 };
 
-export default AddPropertyForm;
+export default EditPropertyForm;

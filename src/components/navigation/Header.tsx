@@ -1,7 +1,6 @@
 'use client'
 import {
     Loader2,
-    Search,
     Bell,
     Settings,
     Home,
@@ -11,27 +10,27 @@ import SignInBtn from "../authentication/SignInBtn"
 import { ModeToggle } from "../theme-toggle"
 import { useSession } from "@/lib/auth-client"
 import Link from "next/link"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Button } from "@/components/ui/button"
 import CustomAvatarImage from "./Avatar"
-import { SidebarTrigger } from "../ui/sidebar"
-import { Separator } from "../ui/separator"
-import { Badge } from "../ui/badge"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "../ui/tooltip"
+} from "@/components/ui/tooltip"
 import { usePathname } from "next/navigation"
 import GlobarSearch from "./GlobarSearch"
+import Notifications from "../notifications/Notifications"
 const Header = () => {
     const { data: session, isPending, error } = useSession()
     const pathname = usePathname()
@@ -97,40 +96,9 @@ const Header = () => {
                     </div>
 
                     {/* Right - Essential actions only */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                         {/* Notifications */}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="relative h-8 w-8 p-0">
-                                    <Bell className="h-4 w-4" />
-                                    <Badge
-                                        variant="destructive"
-                                        className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
-                                    >
-                                        3
-                                    </Badge>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-80">
-                                <div className="flex items-center justify-between p-2">
-                                    <h4 className="font-semibold">Notifications</h4>
-                                    <Badge variant="secondary">3</Badge>
-                                </div>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-                                    <div className="font-medium">Check-in today</div>
-                                    <div className="text-sm text-muted-foreground">2 guests checking in at Property A</div>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-                                    <div className="font-medium">Maintenance due</div>
-                                    <div className="text-sm text-muted-foreground">Kitchen repair needed at Property B</div>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-                                    <div className="font-medium">Payment received</div>
-                                    <div className="text-sm text-muted-foreground">KES 25,000 via M-Pesa</div>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Notifications />
 
                         {/* Theme Toggle - Mobile */}
                         <div className="md:hidden">

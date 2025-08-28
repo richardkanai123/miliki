@@ -111,10 +111,13 @@ export const createPropertySchema = z
 		// Additional Notes & Fees
 		notes: z
 			.string()
-			.min(10, "Notes must be at least 10 characters")
 			.max(500, "Notes must not exceed 500 characters")
 			.trim()
-            .or(z.literal("")),
+			.optional()
+			.transform((val) => val || "")
+			.refine((val) => val === "" || val.length >= 10, {
+				message: "Notes must be at least 10 characters if provided"
+			}),
         
 		cleaningFee: z
             .number().int("Cleaning fee must be a whole number").default(0),

@@ -80,7 +80,7 @@ const BasicInformationStep = ({ form }: BasicInformationStepProps) => (
                             <SelectContent>
                                 {PropertySizesEnum.options.map((size) => (
                                     <SelectItem key={size} value={size}>
-                                        {size.replace('_', ' ').toWellFormed()}
+                                        {size.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -164,18 +164,6 @@ const BasicInformationStep = ({ form }: BasicInformationStepProps) => (
                     </FormItem>
                 )}
             />
-        </div>
-
-        <div className="">
-
-        </div>
-
-        <div className="">
-
-        </div>
-
-        <div className="">
-
         </div>
     </div>
 )
