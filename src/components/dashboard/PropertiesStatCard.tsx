@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Property } from '@/generated/prisma';
 import { Building2 } from 'lucide-react'
-import React from 'react'
+import React, { use } from 'react'
 
 interface PropertiesStatCardProps {
     propertiesPromise: Promise<{
@@ -14,8 +14,8 @@ interface PropertiesStatCardProps {
 }
 
 
-const PropertiesStatCard = async ({ propertiesPromise }: PropertiesStatCardProps) => {
-    const { success, message, properties } = await propertiesPromise
+const PropertiesStatCard = ({ propertiesPromise }: PropertiesStatCardProps) => {
+    const { success, message, properties } = use(propertiesPromise)
 
     if (!success) {
         return (

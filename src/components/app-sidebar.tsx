@@ -113,10 +113,6 @@ const NavData = {
           title: "Add Guest",
           url: "/dashboard/guests/add",
         },
-        {
-          title: "Guest Reviews",
-          url: "/dashboard/guests/reviews",
-        },
       ],
     },
     {
