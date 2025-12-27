@@ -2,6 +2,8 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin, organization} from "better-auth/plugins"
 import { prisma } from "./prisma";
+import { nextCookies } from "better-auth/next-js";
+import { ac, roles } from "./permissions";
 
 
 export const auth = betterAuth({
@@ -18,14 +20,39 @@ emailAndPassword:{
     minPasswordLength: 6,
     maxPasswordLength:20,
     revokeSessionsOnPasswordReset: true
-},
+    },
+socialProviders:{
+    google: {
+        enabled: true,
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        mapProfileToUser(profile) {
+            return {
+                email: profile.email,
+                name: profile.name,
+                image: profile.picture,
+            }
+        },
+    },
+    
+    },
+
+    account: {
+        accountLinking: {
+            enabled: true,
+            allowDifferentEmails: false,
+            trustedProviders: ['google'],
+        }
+    },
 plugins: [
     admin(),
     organization({
-    creatorRole: "admin",
+    creatorRole: "owner", // Creator becomes owner (admin is most superior role)
     cancelPendingInvitationsOnReInvite: true,
-    })
-    
+    ac, // Access control instance
+    roles, // Custom roles (admin > owner > manager > member > user)
+    }),
+    nextCookies()
 ],
 
 session:{

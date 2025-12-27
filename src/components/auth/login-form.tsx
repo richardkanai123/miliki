@@ -25,7 +25,8 @@ import {
     InputGroup,
     InputGroupInput,
 } from "@/components/ui/input-group"
-import { Link, LogInIcon } from "lucide-react"
+import { ArrowRightIcon, LogInIcon } from "lucide-react"
+import Link from "next/link"
 
 const formSchema = z.object({
     email: z.email(),
@@ -59,82 +60,102 @@ const LoginForm = () => {
     }
 
     return (
-        <Card className="w-full sm:max-w-md">
-            <CardHeader>
-                <CardTitle> Miliki</CardTitle>
-                <CardDescription>
-                    Login to your Miliki account to continue
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
-                    <FieldGroup>
-                        <Controller
-                            name="email"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="login-form-title">
-                                        Email
-                                    </FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="login-form-email"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="example@example.com"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                        <Controller
-                            name="password"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="login-form-password">
-                                        Password
-                                    </FieldLabel>
-                                    <InputGroup className="w-full flex items-center justify-between">
-                                        <InputGroupInput
+        <>
+            <Card className="w-full sm:max-w-md">
+                <CardHeader>
+                    <CardTitle> Miliki</CardTitle>
+                    <CardDescription>
+                        Login to your Miliki account to continue
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+                        <FieldGroup>
+                            <Controller
+                                name="email"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="login-form-title">
+                                            Email
+                                        </FieldLabel>
+                                        <Input
                                             {...field}
-                                            id="login-form-password"
-                                            placeholder="Enter your password"
+                                            id="login-form-email"
                                             aria-invalid={fieldState.invalid}
-                                            type="password"
+                                            placeholder="example@example.com"
+                                            autoComplete="off"
                                         />
-                                    </InputGroup>
-                                    <FieldDescription>
-                                        Password must be at least 6 characters
-                                    </FieldDescription>
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                            <Controller
+                                name="password"
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor="login-form-password">
+                                            Password
+                                        </FieldLabel>
+                                        <InputGroup className="w-full flex items-center justify-between">
+                                            <InputGroupInput
+                                                {...field}
+                                                id="login-form-password"
+                                                placeholder="Enter your password"
+                                                aria-invalid={fieldState.invalid}
+                                                type="password"
+                                            />
+                                        </InputGroup>
+                                        <FieldDescription>
+                                            Password must be at least 6 characters
+                                        </FieldDescription>
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                        </FieldGroup>
+                    </form>
+                </CardContent>
+                <CardFooter>
+                    <FieldGroup>
+                        <Field orientation="horizontal">
+                            <Button className="font-semibold text-lg" type="submit" form="login-form">
+                                <LogInIcon className="size-4" />
+                                Login
+                            </Button>
+                            <Button type="button" variant="outline" onClick={() => form.reset()}>
+                                Clear
+                            </Button>
+                        </Field>
                     </FieldGroup>
-                </form>
-            </CardContent>
-            <CardFooter>
-                <FieldGroup>
-                    <Field orientation="horizontal">
-                        <Button size="lg" type="submit" form="login-form">
-                            <LogInIcon className="size-4" />
-                            Login
-                        </Button>
-                        <Button type="button" variant="outline" onClick={() => form.reset()}>
-                            Clear
-                        </Button>
-                    </Field>
-                </FieldGroup>
 
 
-            </CardFooter>
-        </Card>
+                </CardFooter>
+            </Card>
+
+            <Card className="w-full sm:max-w-md">
+                <CardContent>
+                    <div className="w-full flex items-center justify-center gap-2 ">
+                        <p className=" text-muted-foreground">Don't have an account?</p>
+                        <Link className="w-fit flex items-center underline gap-2 text-sky-500 hover:text-sky-600" href="/create-account">
+                            Create Account
+                        </Link>
+                    </div>
+                    <div className="w-full flex items-center justify-center gap-2 mt-4">
+                        <p className=" text-muted-foreground">Forgot your password?</p>
+                        <Link className="w-fit flex items-center underline gap-2 text-sky-500 hover:text-sky-600" href="/reset-password">
+                            Reset Password
+                            <ArrowRightIcon className="size-4 animate-pulse hover:animate-none" />
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
+        </>
     )
 }
 
