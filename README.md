@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Miliki
+
+A full-stack property management and house-hunting platform designed for the Kenyan market. Miliki streamlines the relationship between landlords, agents, and tenants through automated invoicing, secure role-based access, and integrated M-Pesa payments.
+
+## Features
+
+- **Multi-tenant Architecture** — Organizations (landlords/agents) manage their own properties and tenants
+- **Role-Based Access Control** — Super Admin, Landlord, Agent, and Tenant roles with granular permissions
+- **Property & Unit Management** — Track properties, units, occupancy status, and amenities
+- **Lease Management** — Create and manage rental agreements with automated tracking
+- **Automated Invoicing** — Monthly rent invoice generation with payment reconciliation
+- **M-Pesa Integration** — Seamless local payments via Safaricom Daraja API (STK Push)
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 16 (App Router & Server Actions) |
+| Language | TypeScript |
+| Authentication | Better-Auth (with Organization & Multi-tenancy plugins) |
+| Database | Neon (PostgreSQL) |
+| ORM | Prisma |
+| Payments | Safaricom Daraja API |
+| Styling | Tailwind CSS 4, shadcn/ui |
+| Linting | Biome |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- pnpm
+- Neon PostgreSQL database
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clone the repository
+git clone https://github.com/yourusername/miliki.git
+cd miliki
+
+# Install dependencies
+pnpm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database URL and other credentials
+
+# Generate Prisma client
+pnpm prisma generate
+
+# Run database migrations
+pnpm prisma migrate dev
+
+# Start the development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+miliki/
+├── prisma/
+│   └── schema.prisma       # Database schema
+├── src/
+│   ├── app/                # Next.js App Router pages
+│   │   ├── (auth)/         # Authentication routes
+│   │   └── dashboard/      # Protected dashboard routes
+│   ├── components/         # React components
+│   │   └── ui/             # shadcn/ui components
+│   └── lib/                # Utilities and configurations
+│       ├── auth.ts         # Better-Auth configuration
+│       ├── auth-client.ts  # Auth client
+│       └── db.ts           # Prisma client
+├── public/                 # Static assets
+└── package.json
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# Database
+DATABASE_URL="postgresql://..."
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Better-Auth
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3000"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# M-Pesa (Daraja API)
+MPESA_CONSUMER_KEY="your-consumer-key"
+MPESA_CONSUMER_SECRET="your-consumer-secret"
+MPESA_PASSKEY="your-passkey"
+MPESA_SHORTCODE="your-shortcode"
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+MIT
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
