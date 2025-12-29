@@ -23,6 +23,7 @@ model User {
   accounts      Account[]
   members       Member[]
   invitations   Invitation[]
+  phoneNumber   String?
 
   @@map("user")
 }

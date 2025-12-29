@@ -1,10 +1,10 @@
-import Link from "next/link"
+import { authCheck } from "@/lib/auth-check"
+import AuthRequired from "./auth-required"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 import LogoutBtn from "./logout-btn"
 import { Button } from "../ui/button"
 import { HomeIcon, LayoutDashboard, UserIcon } from "lucide-react"
-import { authCheck } from "@/lib/auth-check"
-import AuthRequired from "./auth-required"
 
 const Authenticated = async () => {
     const session = await authCheck()
