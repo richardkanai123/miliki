@@ -25,8 +25,10 @@ import {
     InputGroup,
     InputGroupInput,
 } from "@/components/ui/input-group"
-import { ArrowRightIcon, LogInIcon } from "lucide-react"
+import { ArrowRightIcon, LoaderIcon, LogInIcon } from "lucide-react"
 import Link from "next/link"
+import { signIn } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
     email: z.email(),
@@ -34,6 +36,7 @@ const formSchema = z.object({
 })
 
 const LoginForm = () => {
+    const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,21 +45,29 @@ const LoginForm = () => {
         },
     })
 
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                    <code>{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-                content: "flex flex-col gap-2",
-            },
-            style: {
-                "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-        })
+    async function onSubmit(data: z.infer<typeof formSchema>) {
+        try {
+            await signIn.email({
+                email: data.email,
+                password: data.password,
+            }, {
+                onSuccess: () => {
+                    toast.success("Login successful, welcome back!")
+                    form.reset()
+                    router.push("/")
+                },
+                onError: ({ error }) => {
+                    toast.error("Unable to login", {
+                        description: error.message,
+                    })
+                }
+            })
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred"
+            toast.error("Unable to login", {
+                description: errorMessage,
+            })
+        }
     }
 
     return (
@@ -124,9 +135,9 @@ const LoginForm = () => {
                 <CardFooter>
                     <FieldGroup>
                         <Field orientation="horizontal">
-                            <Button className="font-semibold text-lg" type="submit" form="login-form">
-                                <LogInIcon className="size-4" />
-                                Login
+                            <Button disabled={form.formState.isSubmitting} className="font-semibold text-lg" type="submit" form="login-form">
+                                {form.formState.isSubmitting ? <LoaderIcon className="size-4 animate-spin" /> : <LogInIcon className="size-4" />}
+                                {form.formState.isSubmitting ? "Logging in..." : "Login"}
                             </Button>
                             <Button type="button" variant="outline" onClick={() => form.reset()}>
                                 Clear
@@ -140,12 +151,7 @@ const LoginForm = () => {
 
             <Card className="w-full sm:max-w-md">
                 <CardContent>
-                    <div className="w-full flex items-center justify-center gap-2 ">
-                        <p className=" text-muted-foreground">Don't have an account?</p>
-                        <Link className="w-fit flex items-center underline gap-2 text-sky-500 hover:text-sky-600" href="/create-account">
-                            Create Account
-                        </Link>
-                    </div>
+
                     <div className="w-full flex items-center justify-center gap-2 mt-4">
                         <p className=" text-muted-foreground">Forgot your password?</p>
                         <Link className="w-fit flex items-center underline gap-2 text-sky-500 hover:text-sky-600" href="/reset-password">

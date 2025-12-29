@@ -25,11 +25,13 @@ import {
     InputGroup,
     InputGroupInput,
 } from "@/components/ui/input-group"
-import { UserPlusIcon } from "lucide-react"
+import { Loader2Icon, UserPlusIcon } from "lucide-react"
+import { signUp } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
+    email: z.email("Please enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -38,6 +40,7 @@ const formSchema = z.object({
 })
 
 const CreateAccountForm = () => {
+    const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,21 +51,31 @@ const CreateAccountForm = () => {
         },
     })
 
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        toast("Account created successfully!", {
-            description: (
-                <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                    <code>{JSON.stringify({ name: data.name, email: data.email, password: data.password }, null, 2)}</code>
-                </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-                content: "flex flex-col gap-2",
-            },
-            style: {
-                "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-        })
+    async function SignUpWithEmailAndPassword(data: z.infer<typeof formSchema>) {
+        try {
+            await signUp.email({
+                email: data.email,
+                name: data.name,
+                password: data.password,
+            }, {
+                onSuccess: () => {
+                    toast.success("Account created successfully!")
+                    form.reset()
+                    router.push("/")
+                },
+                onError: (error) => {
+                    toast.error(error.error.message, {
+                        description: error.error.cause?.toString() || "An unknown error occurred"
+                    })
+                    form.setError("root.serverError", {
+                        message: error.error.message
+                    })
+                }
+            })
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred"
+            toast.error(errorMessage)
+        }
     }
 
     return (
@@ -74,7 +87,7 @@ const CreateAccountForm = () => {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form id="create-account-form" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="create-account-form" onSubmit={form.handleSubmit(SignUpWithEmailAndPassword)}>
                     <FieldGroup>
                         <Controller
                             name="name"
@@ -174,13 +187,22 @@ const CreateAccountForm = () => {
                             )}
                         />
                     </FieldGroup>
+
+                    {form.formState.errors.root?.serverError && (
+                        <FieldError errors={[form.formState.errors.root.serverError]}>
+                            {form.formState.errors.root.serverError.message}
+                        </FieldError>
+                    )}
                 </form>
             </CardContent>
             <CardFooter>
                 <Field orientation="horizontal">
-                    <Button size="lg" type="submit" form="create-account-form">
-                        <UserPlusIcon className="size-4" />
-                        Create Account
+                    <Button disabled={form.formState.isSubmitting} size="lg" type="submit" form="create-account-form">
+                        {form.formState.isSubmitting ? <>
+                            <Loader2Icon className="size-4 animate-spin" />
+                            Creating account...
+                        </> : <><UserPlusIcon className="size-4" />
+                            Create Account</>}
                     </Button>
                     <Button type="button" variant="outline" onClick={() => form.reset()}>
                         Clear
