@@ -184,6 +184,9 @@ export type MemberWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  managedProperties?: Prisma.PropertyListRelationFilter
+  tenancies?: Prisma.TenancyListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type MemberOrderByWithRelationInput = {
@@ -194,6 +197,9 @@ export type MemberOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  managedProperties?: Prisma.PropertyOrderByRelationAggregateInput
+  tenancies?: Prisma.TenancyOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
@@ -207,6 +213,9 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  managedProperties?: Prisma.PropertyListRelationFilter
+  tenancies?: Prisma.TenancyListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id">
 
 export type MemberOrderByWithAggregationInput = {
@@ -237,6 +246,9 @@ export type MemberCreateInput = {
   createdAt: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutMembersInput
+  managedProperties?: Prisma.PropertyCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUncheckedCreateInput = {
@@ -245,6 +257,9 @@ export type MemberUncheckedCreateInput = {
   userId: string
   role?: string
   createdAt: Date | string
+  managedProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUpdateInput = {
@@ -253,6 +268,9 @@ export type MemberUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembersNestedInput
+  managedProperties?: Prisma.PropertyUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateInput = {
@@ -261,6 +279,9 @@ export type MemberUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  managedProperties?: Prisma.PropertyUncheckedUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberCreateManyInput = {
@@ -317,6 +338,16 @@ export type MemberMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type MemberNullableScalarRelationFilter = {
+  is?: Prisma.MemberWhereInput | null
+  isNot?: Prisma.MemberWhereInput | null
+}
+
+export type MemberScalarRelationFilter = {
+  is?: Prisma.MemberWhereInput
+  isNot?: Prisma.MemberWhereInput
 }
 
 export type MemberCreateNestedManyWithoutUserInput = {
@@ -403,11 +434,58 @@ export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.MemberScalarWhereInput | Prisma.MemberScalarWhereInput[]
 }
 
+export type MemberCreateNestedOneWithoutManagedPropertiesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutManagedPropertiesInput, Prisma.MemberUncheckedCreateWithoutManagedPropertiesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutManagedPropertiesInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneWithoutManagedPropertiesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutManagedPropertiesInput, Prisma.MemberUncheckedCreateWithoutManagedPropertiesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutManagedPropertiesInput
+  upsert?: Prisma.MemberUpsertWithoutManagedPropertiesInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutManagedPropertiesInput, Prisma.MemberUpdateWithoutManagedPropertiesInput>, Prisma.MemberUncheckedUpdateWithoutManagedPropertiesInput>
+}
+
+export type MemberCreateNestedOneWithoutTenanciesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutTenanciesInput, Prisma.MemberUncheckedCreateWithoutTenanciesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutTenanciesInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneRequiredWithoutTenanciesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutTenanciesInput, Prisma.MemberUncheckedCreateWithoutTenanciesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutTenanciesInput
+  upsert?: Prisma.MemberUpsertWithoutTenanciesInput
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutTenanciesInput, Prisma.MemberUpdateWithoutTenanciesInput>, Prisma.MemberUncheckedUpdateWithoutTenanciesInput>
+}
+
+export type MemberCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutPaymentsInput, Prisma.MemberUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutPaymentsInput, Prisma.MemberUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.MemberUpsertWithoutPaymentsInput
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutPaymentsInput, Prisma.MemberUpdateWithoutPaymentsInput>, Prisma.MemberUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type MemberCreateWithoutUserInput = {
   id: string
   role?: string
   createdAt: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
+  managedProperties?: Prisma.PropertyCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUncheckedCreateWithoutUserInput = {
@@ -415,6 +493,9 @@ export type MemberUncheckedCreateWithoutUserInput = {
   organizationId: string
   role?: string
   createdAt: Date | string
+  managedProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type MemberCreateOrConnectWithoutUserInput = {
@@ -459,6 +540,9 @@ export type MemberCreateWithoutOrganizationInput = {
   role?: string
   createdAt: Date | string
   user: Prisma.UserCreateNestedOneWithoutMembersInput
+  managedProperties?: Prisma.PropertyCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMemberInput
 }
 
 export type MemberUncheckedCreateWithoutOrganizationInput = {
@@ -466,6 +550,9 @@ export type MemberUncheckedCreateWithoutOrganizationInput = {
   userId: string
   role?: string
   createdAt: Date | string
+  managedProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type MemberCreateOrConnectWithoutOrganizationInput = {
@@ -494,6 +581,174 @@ export type MemberUpdateManyWithWhereWithoutOrganizationInput = {
   data: Prisma.XOR<Prisma.MemberUpdateManyMutationInput, Prisma.MemberUncheckedUpdateManyWithoutOrganizationInput>
 }
 
+export type MemberCreateWithoutManagedPropertiesInput = {
+  id: string
+  role?: string
+  createdAt: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
+  user: Prisma.UserCreateNestedOneWithoutMembersInput
+  tenancies?: Prisma.TenancyCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMemberInput
+}
+
+export type MemberUncheckedCreateWithoutManagedPropertiesInput = {
+  id: string
+  organizationId: string
+  userId: string
+  role?: string
+  createdAt: Date | string
+  tenancies?: Prisma.TenancyUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMemberInput
+}
+
+export type MemberCreateOrConnectWithoutManagedPropertiesInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutManagedPropertiesInput, Prisma.MemberUncheckedCreateWithoutManagedPropertiesInput>
+}
+
+export type MemberUpsertWithoutManagedPropertiesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutManagedPropertiesInput, Prisma.MemberUncheckedUpdateWithoutManagedPropertiesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutManagedPropertiesInput, Prisma.MemberUncheckedCreateWithoutManagedPropertiesInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutManagedPropertiesInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutManagedPropertiesInput, Prisma.MemberUncheckedUpdateWithoutManagedPropertiesInput>
+}
+
+export type MemberUpdateWithoutManagedPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembersNestedInput
+  tenancies?: Prisma.TenancyUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutManagedPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenancies?: Prisma.TenancyUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberCreateWithoutTenanciesInput = {
+  id: string
+  role?: string
+  createdAt: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
+  user: Prisma.UserCreateNestedOneWithoutMembersInput
+  managedProperties?: Prisma.PropertyCreateNestedManyWithoutManagerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMemberInput
+}
+
+export type MemberUncheckedCreateWithoutTenanciesInput = {
+  id: string
+  organizationId: string
+  userId: string
+  role?: string
+  createdAt: Date | string
+  managedProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutManagerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMemberInput
+}
+
+export type MemberCreateOrConnectWithoutTenanciesInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutTenanciesInput, Prisma.MemberUncheckedCreateWithoutTenanciesInput>
+}
+
+export type MemberUpsertWithoutTenanciesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutTenanciesInput, Prisma.MemberUncheckedUpdateWithoutTenanciesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutTenanciesInput, Prisma.MemberUncheckedCreateWithoutTenanciesInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutTenanciesInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutTenanciesInput, Prisma.MemberUncheckedUpdateWithoutTenanciesInput>
+}
+
+export type MemberUpdateWithoutTenanciesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembersNestedInput
+  managedProperties?: Prisma.PropertyUpdateManyWithoutManagerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutTenanciesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  managedProperties?: Prisma.PropertyUncheckedUpdateManyWithoutManagerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberCreateWithoutPaymentsInput = {
+  id: string
+  role?: string
+  createdAt: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
+  user: Prisma.UserCreateNestedOneWithoutMembersInput
+  managedProperties?: Prisma.PropertyCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyCreateNestedManyWithoutTenantInput
+}
+
+export type MemberUncheckedCreateWithoutPaymentsInput = {
+  id: string
+  organizationId: string
+  userId: string
+  role?: string
+  createdAt: Date | string
+  managedProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutManagerInput
+  tenancies?: Prisma.TenancyUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type MemberCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutPaymentsInput, Prisma.MemberUncheckedCreateWithoutPaymentsInput>
+}
+
+export type MemberUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutPaymentsInput, Prisma.MemberUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutPaymentsInput, Prisma.MemberUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutPaymentsInput, Prisma.MemberUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type MemberUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembersNestedInput
+  managedProperties?: Prisma.PropertyUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUpdateManyWithoutTenantNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  managedProperties?: Prisma.PropertyUncheckedUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUncheckedUpdateManyWithoutTenantNestedInput
+}
+
 export type MemberCreateManyUserInput = {
   id: string
   organizationId: string
@@ -506,6 +761,9 @@ export type MemberUpdateWithoutUserInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  managedProperties?: Prisma.PropertyUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutUserInput = {
@@ -513,6 +771,9 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  managedProperties?: Prisma.PropertyUncheckedUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutUserInput = {
@@ -534,6 +795,9 @@ export type MemberUpdateWithoutOrganizationInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMembersNestedInput
+  managedProperties?: Prisma.PropertyUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutOrganizationInput = {
@@ -541,6 +805,9 @@ export type MemberUncheckedUpdateWithoutOrganizationInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  managedProperties?: Prisma.PropertyUncheckedUpdateManyWithoutManagerNestedInput
+  tenancies?: Prisma.TenancyUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
@@ -551,6 +818,53 @@ export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
 }
 
 
+/**
+ * Count Type MemberCountOutputType
+ */
+
+export type MemberCountOutputType = {
+  managedProperties: number
+  tenancies: number
+  payments: number
+}
+
+export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  managedProperties?: boolean | MemberCountOutputTypeCountManagedPropertiesArgs
+  tenancies?: boolean | MemberCountOutputTypeCountTenanciesArgs
+  payments?: boolean | MemberCountOutputTypeCountPaymentsArgs
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MemberCountOutputType
+   */
+  select?: Prisma.MemberCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountManagedPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountTenanciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenancyWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -560,6 +874,10 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  managedProperties?: boolean | Prisma.Member$managedPropertiesArgs<ExtArgs>
+  tenancies?: boolean | Prisma.Member$tenanciesArgs<ExtArgs>
+  payments?: boolean | Prisma.Member$paymentsArgs<ExtArgs>
+  _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
 export type MemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -594,6 +912,10 @@ export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  managedProperties?: boolean | Prisma.Member$managedPropertiesArgs<ExtArgs>
+  tenancies?: boolean | Prisma.Member$tenanciesArgs<ExtArgs>
+  payments?: boolean | Prisma.Member$paymentsArgs<ExtArgs>
+  _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -609,6 +931,9 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
+    managedProperties: Prisma.$PropertyPayload<ExtArgs>[]
+    tenancies: Prisma.$TenancyPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1012,6 +1337,9 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  managedProperties<T extends Prisma.Member$managedPropertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$managedPropertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tenancies<T extends Prisma.Member$tenanciesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$tenanciesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Member$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1439,6 +1767,78 @@ export type MemberDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Members to delete.
    */
   limit?: number
+}
+
+/**
+ * Member.managedProperties
+ */
+export type Member$managedPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Property
+   */
+  select?: Prisma.PropertySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Property
+   */
+  omit?: Prisma.PropertyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyInclude<ExtArgs> | null
+  where?: Prisma.PropertyWhereInput
+  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+}
+
+/**
+ * Member.tenancies
+ */
+export type Member$tenanciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Tenancy
+   */
+  select?: Prisma.TenancySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Tenancy
+   */
+  omit?: Prisma.TenancyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenancyInclude<ExtArgs> | null
+  where?: Prisma.TenancyWhereInput
+  orderBy?: Prisma.TenancyOrderByWithRelationInput | Prisma.TenancyOrderByWithRelationInput[]
+  cursor?: Prisma.TenancyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenancyScalarFieldEnum | Prisma.TenancyScalarFieldEnum[]
+}
+
+/**
+ * Member.payments
+ */
+export type Member$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

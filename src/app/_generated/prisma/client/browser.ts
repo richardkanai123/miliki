@@ -52,3 +52,53 @@ export type Member = Prisma.MemberModel
  * 
  */
 export type Invitation = Prisma.InvitationModel
+/**
+ * Model Property
+ * Property represents a real estate asset containing rentable units
+ */
+export type Property = Prisma.PropertyModel
+/**
+ * Model Amenity
+ * 
+ */
+export type Amenity = Prisma.AmenityModel
+/**
+ * Model PropertyAmenity
+ * 
+ */
+export type PropertyAmenity = Prisma.PropertyAmenityModel
+/**
+ * Model Unit
+ * Unit represents a rentable space - listings happen at this level
+ */
+export type Unit = Prisma.UnitModel
+/**
+ * Model UnitAmenity
+ * 
+ */
+export type UnitAmenity = Prisma.UnitAmenityModel
+/**
+ * Model Tenancy
+ * Tenancy represents a rental agreement between tenant and unit
+ */
+export type Tenancy = Prisma.TenancyModel
+/**
+ * Model Invoice
+ * Invoice for tenant billing
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model Payment
+ * Payment records for invoice settlements
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Notification
+ * Notification for user alerts
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model AuditLog
+ * Audit log for important actions
+ */
+export type AuditLog = Prisma.AuditLogModel

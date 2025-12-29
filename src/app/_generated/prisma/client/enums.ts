@@ -9,7 +9,84 @@
 * 🟢 You can import this file directly.
 */
 
+export const PropertyType = {
+  APARTMENT: 'APARTMENT',
+  HOUSE: 'HOUSE',
+  TOWNHOUSE: 'TOWNHOUSE',
+  STUDIO: 'STUDIO',
+  COMMERCIAL: 'COMMERCIAL',
+  BEDSITTER: 'BEDSITTER',
+  SINGLE_ROOM: 'SINGLE_ROOM',
+  OTHER: 'OTHER'
+} as const
+
+export type PropertyType = (typeof PropertyType)[keyof typeof PropertyType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const UnitStatus = {
+  VACANT: 'VACANT',
+  OCCUPIED: 'OCCUPIED',
+  MAINTENANCE: 'MAINTENANCE',
+  RESERVED: 'RESERVED'
+} as const
+
+export type UnitStatus = (typeof UnitStatus)[keyof typeof UnitStatus]
+
+
+export const TenancyStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED',
+  RENEWED: 'RENEWED'
+} as const
+
+export type TenancyStatus = (typeof TenancyStatus)[keyof typeof TenancyStatus]
+
+
+export const InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  PARTIAL: 'PARTIAL',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE',
+  CANCELLED: 'CANCELLED',
+  WRITTEN_OFF: 'WRITTEN_OFF'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
+export const InvoiceType = {
+  RENT: 'RENT',
+  DEPOSIT: 'DEPOSIT',
+  UTILITY: 'UTILITY',
+  PENALTY: 'PENALTY',
+  OTHER: 'OTHER'
+} as const
+
+export type InvoiceType = (typeof InvoiceType)[keyof typeof InvoiceType]
+
+
+export const PaymentMethod = {
+  MPESA: 'MPESA',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  CASH: 'CASH',
+  CHEQUE: 'CHEQUE',
+  CARD: 'CARD',
+  OTHER: 'OTHER'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
