@@ -1,10 +1,7 @@
-// Custom permissions for the Miliki application
-// Role hierarchy: admin > owner > manager > member > user
-
 import { createAccessControl } from "better-auth/plugins/access";
-
+import { defaultStatements } from "better-auth/plugins/organization/access";
 // Define all resources and actions available in the application
-const statement = {
+const statement = {...defaultStatements, 
   organization: ["create", "read", "update", "delete", "invite", "remove"],
   property: ["create", "read", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
@@ -63,7 +60,7 @@ export const admin = ac.newRole({
  * - Can manage members (invite, remove, update roles)
  */
 export const owner = ac.newRole({
-  organization: ["create", "read", "update", "invite", "remove"],
+  organization: ["create", "read", "update", "invite", "remove", "delete"],
   property: ["create", "read", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
   tenancy: [
@@ -93,13 +90,13 @@ export const owner = ac.newRole({
  */
 export const manager = ac.newRole({
   organization: ["read"],
-  property: ["read", "create", "update"],
+  property: ["read", "create", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
   tenancy: ["create", "read", "update", "activate", "renew", "terminate"],
   invoice: ["create", "read", "update", "send", "markPaid"],
-  payment: ["read", "reconcile"],
+  payment: ["read", "reconcile", 'create'],
   member: ["invite", "read"],
-  amenity: ["read"],
+  amenity: ["read", "create", "update", "delete"],
   listing: ["view", "search"],
 });
 
@@ -117,7 +114,6 @@ export const member = ac.newRole({
   tenancy: ["read"],
   invoice: ["read"],
   payment: ["create", "read"], // Can make payments
-  member: ["read"],
   amenity: ["read"],
   listing: ["view", "search"],
 });

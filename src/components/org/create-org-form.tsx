@@ -50,7 +50,7 @@ const CreateOrgForm = ({ userId }: { userId: string }) => {
                     description: "You are now a owner of the organization",
                 })
                 form.reset()
-                router.push(`/org/${orgId}`)
+                router.push(`/org/my-orgs/${orgId}`)
             }
             else {
                 toast.error("Unable to create organization", {

@@ -3,17 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "./auth";
 
-/**
- * Check if the current user has permission for a specific resource and action
- *
- * @example
- * ```ts
- * const canCreateUnit = await hasPermission({
- *   resource: "unit",
- *   action: "create"
- * });
- * ```
- */
+
 export async function hasPermission({
   resource,
   action,
@@ -47,16 +37,7 @@ export async function hasPermission({
   }
 }
 
-/**
- * Check if the current user has multiple permissions
- *
- * @example
- * ```ts
- * const canManageUnits = await hasPermissions({
- *   unit: ["create", "update", "delete"]
- * });
- * ```
- */
+
 export async function hasPermissions(
   permissions: Record<string, string[]>,
 ): Promise<boolean> {
@@ -340,4 +321,14 @@ export const PermissionChecks = {
    */
   canSearchListings: async () =>
     await hasPermission({ resource: "listing", action: "search" }),
+
+  // ===========================================
+  // Organization
+  // ===========================================
+
+  /**
+   * Check if user can delete an organization
+   */
+  // canDeleteOrganization: async () =>
+  //   await hasPermission({ resource: "organization", action: "remove" }),
 };

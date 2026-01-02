@@ -47,15 +47,21 @@ socialProviders:{
 plugins: [
     admin(),
     organization({
-    creatorRole: "owner", // Creator becomes owner (admin is most superior role)
+        disableOrganizationDeletion:false,
+    creatorRole: "owner", 
     cancelPendingInvitationsOnReInvite: true,
     ac, // Access control instance
-    roles, // Custom roles (admin > owner > manager > member > user)
-    }),
-    nextCookies()
+    roles, 
+}),
+nextCookies()
 ],
 
 session:{
     expiresIn: 60 * 60 * 24 * 7, // 7 days
 }
 });
+
+
+export type Session = typeof auth.$Infer.Session
+export type User = typeof auth.$Infer.Session.user
+export type Organization = typeof auth.$Infer.Organization

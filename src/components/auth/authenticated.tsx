@@ -3,7 +3,7 @@ import AuthRequired from "./auth-required"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import LogoutBtn from "./logout-btn"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import { HomeIcon, LayoutDashboard, UserIcon } from "lucide-react"
 
 const Authenticated = async () => {

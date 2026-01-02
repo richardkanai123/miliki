@@ -1,7 +1,7 @@
 'use client'
 
-import AuthRequired from "@/components/auth/auth-required"
 import CreateOrgForm from "@/components/org/create-org-form"
+import AuthRequired from "@/components/auth/auth-required"
 import DefaultLoader from "@/components/skeletons/default-loader"
 import { useSession } from "@/lib/auth-client"
 import { Loader2Icon } from "lucide-react"
