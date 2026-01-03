@@ -1,7 +1,7 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { defaultStatements } from "better-auth/plugins/organization/access";
 // Define all resources and actions available in the application
-const statement = {...defaultStatements, 
+const statement = {
   organization: ["create", "read", "update", "delete", "invite", "remove"],
   property: ["create", "read", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
@@ -33,7 +33,7 @@ export const ac = createAccessControl(statement);
  * - Can manage all members (invite, remove, update roles)
  * - Highest level of permissions
  */
-export const admin = ac.newRole({
+export const admin = ac.newRole({...defaultStatements, 
   organization: ["create", "read", "update", "delete", "invite", "remove"],
   property: ["create", "read", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
@@ -59,7 +59,7 @@ export const admin = ac.newRole({
  * - Full access to properties, units, tenancies, invoices, and payments
  * - Can manage members (invite, remove, update roles)
  */
-export const owner = ac.newRole({
+export const owner = ac.newRole({...defaultStatements, 
   organization: ["create", "read", "update", "invite", "remove", "delete"],
   property: ["create", "read", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
@@ -89,6 +89,7 @@ export const owner = ac.newRole({
  * - Can invite members but with limited permissions
  */
 export const manager = ac.newRole({
+  ...defaultStatements, 
   organization: ["read"],
   property: ["read", "create", "update", "delete"],
   unit: ["create", "read", "update", "delete", "assign", "list", "unlist"],
@@ -124,7 +125,7 @@ export const member = ac.newRole({
  * - Can only view and search public listings
  * - Cannot access any organization-specific resources
  */
-export const user = ac.newRole({
+export const user = ac.newRole({ 
   listing: ["view", "search"],
 });
 

@@ -6,7 +6,7 @@ import ActivateOrg from './activate-org'
 import Link from 'next/link'
 import type { Organization } from '@/lib/auth'
 import { Badge } from '../ui/badge'
-import { Building2, Calendar, Users } from 'lucide-react'
+import { Building2, Calendar } from 'lucide-react'
 
 const OrgCard = ({ org, activeOrg }: { org: Organization, activeOrg: string }) => {
     const isActive = activeOrg === org.id
@@ -32,11 +32,11 @@ const OrgCard = ({ org, activeOrg }: { org: Organization, activeOrg: string }) =
                         <Calendar className="h-4 w-4" />
                         <span>Created {new Date(org.createdAt).toLocaleDateString()}</span>
                     </div>
-                    {/* Placeholder for member count if available in future */}
+                    {/* Placeholder for member count if available in future
                     <div className="flex items-center gap-2">
                         <Users className="h-4 w-4" />
                         <span>Members</span>
-                    </div>
+                    </div> */}
                 </div>
             </CardContent>
             <CardFooter className="pt-4">

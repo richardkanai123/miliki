@@ -1,9 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, MailIcon, UsersIcon } from "lucide-react"
+import { CalendarIcon, Loader2Icon, MailIcon, UsersIcon } from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
+import SendInvitatioDialog from "./send-invtation-dialog"
+import LeaveOrgDialog from "./leave-org-dialog"
+import { Suspense } from "react"
+import { Button } from "../ui/button"
 
 interface OrgDetailProps {
     params: Promise<{ id: string }>
@@ -38,7 +42,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
 
     if (!org) {
         return (
-            <div className="w-full h-[60vh] flex flex-col items-center justify-center gap-4 text-center">
+            <div className="w-full h-[60vh]  flex flex-col items-center justify-center gap-4 text-center">
                 <div className="rounded-full bg-muted p-4">
                     <UsersIcon className="h-8 w-8 text-muted-foreground" />
                 </div>
@@ -73,6 +77,9 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         </div>
                     </div>
                 </div>
+                <div className="flex items-center gap-2">
+                    <LeaveOrgDialog orgId={id} />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -92,18 +99,23 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <MailIcon className="h-5 w-5 text-primary" />
-                            Invitations
-                        </CardTitle>
-                        <CardDescription>
-                            Pending invitations sent to users
-                        </CardDescription>
+                    <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2 gap-4">
+                        <div className="space-y-1">
+                            <CardTitle className="flex items-center gap-2">
+                                <MailIcon className="h-5 w-5 text-primary" />
+                                Invitations
+                            </CardTitle>
+                            <CardDescription>
+                                Pending invitations
+                            </CardDescription>
+                        </div>
+                        <Suspense fallback={<Button variant='outline' size="sm" disabled> <Loader2Icon className="size-4 animate-spin" /> </Button>}>
+                            <SendInvitatioDialog organizationId={id} />
+                        </Suspense>
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">{invitations?.length || 0}</div>
-                        <p className="text-xs text-muted-foreground mt-1">Pending accept</p>
+                        <p className="text-xs text-muted-foreground mt-1">Awaiting acceptance</p>
                     </CardContent>
                 </Card>
             </div>

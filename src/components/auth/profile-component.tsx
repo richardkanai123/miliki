@@ -130,10 +130,10 @@ const ProfileComponent = async () => {
 
             {activeOrganization ? (
                 <Card className=" border-none shadow-sm">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
                         <CardTitle className="text-lg font-semibold text-primary">Active Organization</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-4">
+                    <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <div className="space-y-1">
                             <p className="text-sm text-muted-foreground">Organization Name</p>
                             <p className="font-medium">{activeOrganization.name}</p>

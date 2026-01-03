@@ -4,7 +4,8 @@ import { admin, organization} from "better-auth/plugins"
 import { prisma } from "./prisma";
 import { nextCookies } from "better-auth/next-js";
 import { ac, roles } from "./permissions";
-
+import { resend } from "./resend";
+import InvitationEmail from "./emails/invitation-email";
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -52,12 +53,27 @@ plugins: [
     cancelPendingInvitationsOnReInvite: true,
     ac, // Access control instance
     roles, 
-}),
-nextCookies()
+    async sendInvitationEmail(data) {
+        const inviteLink = `${process.env.NEXT_PUBLIC_APP_URL}/api/invitation/accept-invitation/${data.id}`;
+        resend.emails.send({
+            from: "Miliki <onboarding@resend.dev>",
+            to: data.email,
+            subject: "You're invited to join Miliki organization.",
+            react: InvitationEmail({
+                invitedByUsername: data.inviter.user.name,
+                invitedByEmail: data.inviter.user.email,
+                teamName: data.organization.name,
+                role:data.role,
+                inviteLink,
+            }),
+        });
+    },
+    }),
+    nextCookies()
 ],
 
 session:{
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
+expiresIn: 60 * 60 * 24 * 7, // 7 days
 }
 });
 
