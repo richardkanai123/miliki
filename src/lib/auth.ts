@@ -6,6 +6,7 @@ import { nextCookies } from "better-auth/next-js";
 import { ac, roles } from "./permissions";
 import { resend } from "./resend";
 import InvitationEmail from "./emails/invitation-email";
+import { revalidatePath } from "next/cache";
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -51,8 +52,14 @@ plugins: [
         disableOrganizationDeletion:false,
     creatorRole: "owner", 
     cancelPendingInvitationsOnReInvite: true,
+    invitationExpiresIn: 60 * 60 * 24 * 7, // 7 days
     ac, // Access control instance
     roles, 
+    organizationHooks:{
+        afterCreateOrganization:async () => {
+            revalidatePath("/org/my-orgs")
+        },
+    },
     async sendInvitationEmail(data) {
         const inviteLink = `${process.env.NEXT_PUBLIC_APP_URL}/api/invitation/accept-invitation/${data.id}`;
         resend.emails.send({

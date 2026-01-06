@@ -2,17 +2,22 @@
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogMedia } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { organization } from "@/lib/auth-client"
+import { organization, useSession } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2Icon, LogOutIcon, TriangleAlertIcon } from "lucide-react"
+import { Skeleton } from "../ui/skeleton"
 
 const LeaveOrgDialog = ({ orgId }: { orgId: string }) => {
     const [isOpen, setIsOpen] = useState(false)
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
-    if (!orgId) return null
+    const { data: session, isPending: isSessionPending } = useSession()
+
+    if (isSessionPending) return <Skeleton className="size-4 rounded-2xl" />
+    if (!orgId || !session) return null
+
 
     const handleLeaveOrg = async () => {
         startTransition(async () => {
@@ -44,7 +49,7 @@ const LeaveOrgDialog = ({ orgId }: { orgId: string }) => {
             <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="w-full sm:w-auto gap-2">
                     <LogOutIcon className="h-4 w-4" />
-                    Leave Organization
+                    Leave
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

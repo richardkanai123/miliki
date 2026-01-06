@@ -43,13 +43,14 @@ const CreateOrgForm = ({ userId }: { userId: string }) => {
             }
 
             const orgId = data?.id
-
+            const orgName = data?.name
             if (orgId) {
                 await organization.setActive({ organizationId: orgId })
                 toast.success("Organization created successfully", {
-                    description: "You are now a owner of the organization",
+                    description: `You are now the owner of ${orgName}`,
                 })
                 form.reset()
+                router.prefetch('/org/my-orgs')
                 router.push(`/org/my-orgs/${orgId}`)
             }
             else {

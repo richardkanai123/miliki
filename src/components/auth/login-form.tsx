@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/card"
 import {
     Field,
-    FieldDescription,
     FieldError,
     FieldGroup,
     FieldLabel,
@@ -25,7 +24,7 @@ import {
     InputGroup,
     InputGroupInput,
 } from "@/components/ui/input-group"
-import { ArrowRightIcon, LoaderIcon, LogInIcon } from "lucide-react"
+import { Loader2Icon, LockIcon, MailIcon } from "lucide-react"
 import Link from "next/link"
 import { signIn } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
@@ -71,99 +70,95 @@ const LoginForm = () => {
     }
 
     return (
-        <>
-            <Card className="w-full sm:max-w-md">
-                <CardHeader>
-                    <CardTitle> Miliki</CardTitle>
-                    <CardDescription>
-                        Login to your Miliki account to continue
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
-                        <FieldGroup>
-                            <Controller
-                                name="email"
-                                control={form.control}
-                                render={({ field, fieldState }) => (
-                                    <Field data-invalid={fieldState.invalid}>
-                                        <FieldLabel htmlFor="login-form-title">
-                                            Email
-                                        </FieldLabel>
+        <Card className="w-full shadow-lg border-muted/20">
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
+                <CardDescription>
+                    Enter your credentials to access your account
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FieldGroup className="space-y-4">
+                        <Controller
+                            name="email"
+                            control={form.control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
+                                    <FieldLabel htmlFor="login-form-email" className="text-sm font-medium">
+                                        Email
+                                    </FieldLabel>
+                                    <div className="relative">
+                                        <MailIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                         <Input
                                             {...field}
                                             id="login-form-email"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder="example@example.com"
-                                            autoComplete="off"
+                                            placeholder="m@example.com"
+                                            autoComplete="email"
+                                            className="pl-9 h-10"
                                         />
-                                        {fieldState.invalid && (
-                                            <FieldError errors={[fieldState.error]} />
-                                        )}
-                                    </Field>
-                                )}
-                            />
-                            <Controller
-                                name="password"
-                                control={form.control}
-                                render={({ field, fieldState }) => (
-                                    <Field data-invalid={fieldState.invalid}>
-                                        <FieldLabel htmlFor="login-form-password">
+                                    </div>
+                                    {fieldState.invalid && (
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
+                                    )}
+                                </Field>
+                            )}
+                        />
+                        <Controller
+                            name="password"
+                            control={form.control}
+                            render={({ field, fieldState }) => (
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                        <FieldLabel htmlFor="login-form-password" >
                                             Password
                                         </FieldLabel>
-                                        <InputGroup className="w-full flex items-center justify-between">
+                                        <Link
+                                            href="/reset-password"
+                                            className="text-sm font-medium text-primary hover:underline"
+                                            tabIndex={-1}
+                                        >
+                                            Forgot password?
+                                        </Link>
+                                    </div>
+                                    <InputGroup className="w-full">
+                                        <div className="relative w-full">
+                                            <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
                                             <InputGroupInput
                                                 {...field}
                                                 id="login-form-password"
                                                 placeholder="Enter your password"
                                                 aria-invalid={fieldState.invalid}
                                                 type="password"
+                                                autoComplete="current-password"
+                                                className="pl-9 h-10"
                                             />
-                                        </InputGroup>
-                                        <FieldDescription>
-                                            Password must be at least 6 characters
-                                        </FieldDescription>
-                                        {fieldState.invalid && (
-                                            <FieldError errors={[fieldState.error]} />
-                                        )}
-                                    </Field>
-                                )}
-                            />
-                        </FieldGroup>
-                    </form>
-                </CardContent>
-                <CardFooter>
-                    <FieldGroup>
-                        <Field orientation="horizontal">
-                            <Button disabled={form.formState.isSubmitting} className="font-semibold text-lg" type="submit" form="login-form">
-                                {form.formState.isSubmitting ? <LoaderIcon className="size-4 animate-spin" /> : <LogInIcon className="size-4" />}
-                                {form.formState.isSubmitting ? "Logging in..." : "Login"}
-                            </Button>
-                            <Button type="button" variant="outline" onClick={() => form.reset()}>
-                                Clear
-                            </Button>
-                        </Field>
+                                        </div>
+                                    </InputGroup>
+                                    {fieldState.invalid && (
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
+                                    )}
+                                </Field>
+                            )}
+                        />
                     </FieldGroup>
-
-
-                </CardFooter>
-            </Card>
-
-            <Card className="w-full sm:max-w-md">
-                <CardContent>
-
-                    <div className="w-full flex items-center justify-center gap-2 mt-4">
-                        <p className=" text-muted-foreground">Forgot your password?</p>
-                        <Link className="w-fit flex items-center underline gap-2 text-sky-500 hover:text-sky-600" href="/reset-password">
-                            Reset Password
-                            <ArrowRightIcon className="size-4 animate-pulse hover:animate-none" />
-                        </Link>
-                    </div>
-                </CardContent>
-            </Card>
-        </>
+                </form>
+            </CardContent>
+            <CardFooter>
+                <Button disabled={form.formState.isSubmitting} size="lg" className="w-full font-semibold" type="submit" form="login-form">
+                    {form.formState.isSubmitting ? (
+                        <>
+                            <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                            Logging in...
+                        </>
+                    ) : (
+                        "Sign In"
+                    )}
+                </Button>
+            </CardFooter>
+        </Card>
     )
 }
-
 
 export default LoginForm

@@ -162,8 +162,6 @@ model Property {
   city       String
   county     String // Kenyan counties
   postalCode String?
-  latitude   Float?
-  longitude  Float?
 
   // Media
   images String[]

@@ -9,7 +9,7 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { useRouter } from 'next/navigation'
 
-const SendInvitatioDialog = ({ organizationId }: { organizationId: string }) => {
+const SendInvitationDialog = ({ organizationId }: { organizationId: string }) => {
     const [open, setOpen] = useState(false)
     const [isPending, startTransition] = useTransition()
     const [targetEmail, setTargetEmail] = useState('')
@@ -128,4 +128,4 @@ const SendInvitatioDialog = ({ organizationId }: { organizationId: string }) => 
     )
 }
 
-export default SendInvitatioDialog
+export default SendInvitationDialog

@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/card"
 import {
     Field,
-    FieldDescription,
     FieldError,
     FieldGroup,
     FieldLabel,
@@ -25,7 +24,7 @@ import {
     InputGroup,
     InputGroupInput,
 } from "@/components/ui/input-group"
-import { Loader2Icon, UserPlusIcon } from "lucide-react"
+import { Loader2Icon } from "lucide-react"
 import { signUp } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 
@@ -79,33 +78,34 @@ const CreateAccountForm = () => {
     }
 
     return (
-        <Card className="w-full sm:max-w-md">
-            <CardHeader>
-                <CardTitle>Create Account</CardTitle>
+        <Card className="w-full shadow-lg border-muted/20">
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold tracking-tight">Create an account</CardTitle>
                 <CardDescription>
-                    Create a new Miliki account to get started
+                    Enter your email below to create your account
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form id="create-account-form" onSubmit={form.handleSubmit(SignUpWithEmailAndPassword)}>
-                    <FieldGroup>
+                <form id="create-account-form" onSubmit={form.handleSubmit(SignUpWithEmailAndPassword)} className="space-y-4">
+                    <FieldGroup className="space-y-4">
                         <Controller
                             name="name"
                             control={form.control}
                             render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="create-account-form-name">
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
+                                    <FieldLabel htmlFor="create-account-form-name" className="text-sm font-medium">
                                         Name
                                     </FieldLabel>
                                     <Input
                                         {...field}
                                         id="create-account-form-name"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder="Enter your name"
+                                        placeholder="John Doe"
                                         autoComplete="name"
+                                        className="h-10"
                                     />
                                     {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
                                     )}
                                 </Field>
                             )}
@@ -114,23 +114,20 @@ const CreateAccountForm = () => {
                             name="email"
                             control={form.control}
                             render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="create-account-form-email">
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
+                                    <FieldLabel htmlFor="create-account-form-email" className="text-sm font-medium">
                                         Email
                                     </FieldLabel>
                                     <Input
                                         {...field}
                                         id="create-account-form-email"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder="example@example.com"
+                                        placeholder="m@example.com"
                                         autoComplete="email"
+                                        className="h-10"
                                     />
-                                    <FieldDescription>
-                                        This email will be used to login to your account
-                                        and receive important updates.
-                                    </FieldDescription>
                                     {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
                                     )}
                                 </Field>
                             )}
@@ -139,25 +136,23 @@ const CreateAccountForm = () => {
                             name="password"
                             control={form.control}
                             render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="create-account-form-password">
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
+                                    <FieldLabel htmlFor="create-account-form-password" >
                                         Password
                                     </FieldLabel>
-                                    <InputGroup className="w-full flex items-center justify-between">
+                                    <InputGroup className="w-full">
                                         <InputGroupInput
                                             {...field}
                                             id="create-account-form-password"
-                                            placeholder="Enter your password"
+                                            placeholder="Create a password"
                                             aria-invalid={fieldState.invalid}
                                             type="password"
                                             autoComplete="new-password"
+                                            className="h-10"
                                         />
                                     </InputGroup>
-                                    <FieldDescription>
-                                        Password must be at least 6 characters
-                                    </FieldDescription>
                                     {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
                                     )}
                                 </Field>
                             )}
@@ -166,11 +161,11 @@ const CreateAccountForm = () => {
                             name="confirmPassword"
                             control={form.control}
                             render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
+                                <Field data-invalid={fieldState.invalid} className="space-y-2">
                                     <FieldLabel htmlFor="create-account-form-confirm-password">
                                         Confirm Password
                                     </FieldLabel>
-                                    <InputGroup className="w-full flex items-center justify-between">
+                                    <InputGroup className="w-full">
                                         <InputGroupInput
                                             {...field}
                                             id="create-account-form-confirm-password"
@@ -178,10 +173,11 @@ const CreateAccountForm = () => {
                                             aria-invalid={fieldState.invalid}
                                             type="password"
                                             autoComplete="new-password"
+                                            className="h-10"
                                         />
                                     </InputGroup>
                                     {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
+                                        <FieldError errors={[fieldState.error]} className="text-sm" />
                                     )}
                                 </Field>
                             )}
@@ -189,25 +185,25 @@ const CreateAccountForm = () => {
                     </FieldGroup>
 
                     {form.formState.errors.root?.serverError && (
-                        <FieldError errors={[form.formState.errors.root.serverError]}>
-                            {form.formState.errors.root.serverError.message}
-                        </FieldError>
+                        <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                            <FieldError errors={[form.formState.errors.root.serverError]} className="text-sm text-destructive font-medium">
+                                {form.formState.errors.root.serverError.message}
+                            </FieldError>
+                        </div>
                     )}
                 </form>
             </CardContent>
-            <CardFooter>
-                <Field orientation="horizontal">
-                    <Button disabled={form.formState.isSubmitting} size="lg" type="submit" form="create-account-form">
-                        {form.formState.isSubmitting ? <>
-                            <Loader2Icon className="size-4 animate-spin" />
+            <CardFooter className="flex flex-col gap-4">
+                <Button disabled={form.formState.isSubmitting} size="lg" type="submit" form="create-account-form" className="w-full">
+                    {form.formState.isSubmitting ? (
+                        <>
+                            <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
                             Creating account...
-                        </> : <><UserPlusIcon className="size-4" />
-                            Create Account</>}
-                    </Button>
-                    <Button type="button" variant="outline" onClick={() => form.reset()}>
-                        Clear
-                    </Button>
-                </Field>
+                        </>
+                    ) : (
+                        "Create Account"
+                    )}
+                </Button>
             </CardFooter>
         </Card>
     )

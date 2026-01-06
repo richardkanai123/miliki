@@ -1,5 +1,5 @@
-import Authenticated from "@/components/auth/authenticated";
 import { Suspense } from "react";
+import Authenticated from "@/components/auth/authenticated";
 
 export default async function Page() {
 

@@ -1,13 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Loader2Icon, MailIcon, UsersIcon } from "lucide-react"
+import { CalendarIcon, Loader2Icon, MailIcon, PlusIcon, UsersIcon } from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
-import SendInvitatioDialog from "./send-invtation-dialog"
+import SendInvitationDialog from "./send-invitation-dialog"
 import LeaveOrgDialog from "./leave-org-dialog"
 import { Suspense } from "react"
 import { Button } from "../ui/button"
+import OrgMember from "./org-member"
+import { Skeleton } from "../ui/skeleton"
+import { getRoleDisplayName, type MilikiRole } from "@/lib/roles"
 
 interface OrgDetailProps {
     params: Promise<{ id: string }>
@@ -27,7 +30,7 @@ interface Member {
     }
 }
 
-async function getCachedOrg(organizationId: string) {
+async function getOrg(organizationId: string) {
     return await auth.api.getFullOrganization({
         headers: await headers(),
         query: {
@@ -36,9 +39,24 @@ async function getCachedOrg(organizationId: string) {
     })
 }
 
+
+const getCurrentUserRole = async () => {
+    const { role } = await auth.api.getActiveMemberRole({
+        headers: await headers(),
+    });
+    return role
+}
+
 const OrgDetail = async ({ params }: OrgDetailProps) => {
     const { id } = await params
-    const org = await getCachedOrg(id)
+    const org = await getOrg(id)
+    const currentUserRole = await getCurrentUserRole()
+    const userCanManage = currentUserRole === 'owner' || currentUserRole === 'manager'
+    const currentUserIsMember = currentUserRole === 'member'
+
+
+
+
 
     if (!org) {
         return (
@@ -55,6 +73,10 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
     }
 
     const { name, logo, members, invitations, slug, createdAt } = org
+
+    const sortedMembers = members?.sort((a: Member, b: Member) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
 
     return (
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8 p-6">
@@ -77,9 +99,15 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <LeaveOrgDialog orgId={id} />
-                </div>
+                {
+                    currentUserIsMember ? <div className="flex items-center gap-2">
+                        <LeaveOrgDialog orgId={id} />
+                    </div> : (
+                        <Badge variant="outline" className="font-mono text-xs">
+                            {getRoleDisplayName(currentUserRole as MilikiRole)}
+                        </Badge>
+                    )
+                }
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -109,9 +137,16 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                                 Pending invitations
                             </CardDescription>
                         </div>
-                        <Suspense fallback={<Button variant='outline' size="sm" disabled> <Loader2Icon className="size-4 animate-spin" /> </Button>}>
-                            <SendInvitatioDialog organizationId={id} />
-                        </Suspense>
+                        {
+                            userCanManage ? (
+                                <Suspense fallback={
+                                    <Button variant='outline' size="sm" disabled>
+                                        <Loader2Icon className="size-4 animate-spin" />
+                                    </Button>}>
+                                    <SendInvitationDialog organizationId={id} />
+                                </Suspense>
+                            ) : null
+                        }
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">{invitations?.length || 0}</div>
@@ -126,31 +161,28 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                     <CardDescription>Manage members and their roles</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {members && members.length > 0 ? (
+                    <Suspense fallback={
                         <div className="space-y-4">
-                            {members.map((member: Member) => (
-                                <div key={member.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                                    <div className="flex items-center gap-3">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src={member.user.image || undefined} />
-                                            <AvatarFallback>{member.user.name?.charAt(0) || 'U'}</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <p className="font-medium text-sm">{member.user.name}</p>
-                                            <p className="text-xs text-muted-foreground">{member.user.email}</p>
-                                        </div>
-                                    </div>
-                                    <Badge variant={member.role === 'owner' ? 'default' : 'secondary'}>
-                                        {member.role}
-                                    </Badge>
-                                </div>
-                            ))}
+                            <Skeleton className="size-3 w-full" />
                         </div>
-                    ) : (
-                        <div className="text-center py-8 text-muted-foreground">
-                            No members found.
-                        </div>
-                    )}
+                    }>
+                        {members && members.length > 0 ? (
+                            <div className="space-y-4">
+                                {sortedMembers.map((member: Member) => (
+                                    <OrgMember key={member.id} Member={member} currentUserCanManage={userCanManage} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8 text-muted-foreground">
+                                <p>No members found.</p>
+                                <p>Add a member to the organization to get started.</p>
+                                <Button variant="outline" size="sm">
+                                    <PlusIcon className="size-4" />
+                                    Add Member
+                                </Button>
+                            </div>
+                        )}
+                    </Suspense>
                 </CardContent>
             </Card>
         </div>
