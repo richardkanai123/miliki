@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Loader2Icon, MailIcon, PlusIcon, UsersIcon } from "lucide-react"
+import { CalendarIcon, Loader2Icon, MailIcon, UsersIcon } from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import SendInvitationDialog from "./send-invitation-dialog"
@@ -13,7 +13,7 @@ import { Skeleton } from "../ui/skeleton"
 import { getRoleDisplayName, type MilikiRole } from "@/lib/roles"
 
 interface OrgDetailProps {
-    params: Promise<{ id: string }>
+    params: Promise<{ slug: string }>
 }
 
 interface Member {
@@ -30,11 +30,11 @@ interface Member {
     }
 }
 
-async function getOrg(organizationId: string) {
+async function getOrg(slug: string) {
     return await auth.api.getFullOrganization({
         headers: await headers(),
         query: {
-            organizationId
+            organizationSlug: slug
         }
     })
 }
@@ -48,11 +48,10 @@ const getCurrentUserRole = async () => {
 }
 
 const OrgDetail = async ({ params }: OrgDetailProps) => {
-    const { id } = await params
-    const org = await getOrg(id)
+    const { slug } = await params
+    const org = await getOrg(slug)
     const currentUserRole = await getCurrentUserRole()
     const userCanManage = currentUserRole === 'owner' || currentUserRole === 'manager'
-    const currentUserIsMember = currentUserRole === 'member'
 
 
 
@@ -72,7 +71,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
         )
     }
 
-    const { name, logo, members, invitations, slug, createdAt } = org
+    const { name, logo, members, invitations, createdAt, id } = org
 
     const sortedMembers = members?.sort((a: Member, b: Member) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -99,15 +98,14 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         </div>
                     </div>
                 </div>
-                {
-                    currentUserIsMember ? <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="font-mono text-xs">
+                        {getRoleDisplayName(currentUserRole as MilikiRole)}
+                    </Badge>
+                    {currentUserRole !== 'owner' && (
                         <LeaveOrgDialog orgId={id} />
-                    </div> : (
-                        <Badge variant="outline" className="font-mono text-xs">
-                            {getRoleDisplayName(currentUserRole as MilikiRole)}
-                        </Badge>
-                    )
-                }
+                    )}
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,60 +124,68 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         <p className="text-xs text-muted-foreground mt-1">Active members</p>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2 gap-4">
-                        <div className="space-y-1">
-                            <CardTitle className="flex items-center gap-2">
-                                <MailIcon className="h-5 w-5 text-primary" />
-                                Invitations
-                            </CardTitle>
-                            <CardDescription>
-                                Pending invitations
-                            </CardDescription>
-                        </div>
-                        {
-                            userCanManage ? (
-                                <Suspense fallback={
-                                    <Button variant='outline' size="sm" disabled>
-                                        <Loader2Icon className="size-4 animate-spin" />
-                                    </Button>}>
+
+                {userCanManage ? (
+                    <Card>
+                        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2 gap-4">
+                            <div className="space-y-1">
+                                <CardTitle className="flex items-center gap-2">
+                                    <MailIcon className="h-5 w-5 text-primary" />
+                                    Invitations
+                                </CardTitle>
+                                <CardDescription>Pending invitations</CardDescription>
+                            </div>
+                            {userCanManage ? (
+                                <Suspense
+                                    fallback={
+                                        <Button variant="outline" size="sm" disabled>
+                                            <Loader2Icon className="size-4 animate-spin" />
+                                        </Button>
+                                    }
+                                >
                                     <SendInvitationDialog organizationId={id} />
                                 </Suspense>
-                            ) : null
-                        }
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold">{invitations?.length || 0}</div>
-                        <p className="text-xs text-muted-foreground mt-1">Awaiting acceptance</p>
-                    </CardContent>
-                </Card>
+                            ) : null}
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-3xl font-bold">
+                                {invitations?.length || 0}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Awaiting acceptance
+                            </p>
+                        </CardContent>
+                    </Card>
+                ) : null}
             </div>
 
             <Card>
                 <CardHeader>
                     <CardTitle>Member List</CardTitle>
-                    <CardDescription>Manage members and their roles</CardDescription>
+                    <CardDescription>
+                        {userCanManage ? "Manage members and their roles" : "People in this organization"}
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Suspense fallback={
                         <div className="space-y-4">
-                            <Skeleton className="size-3 w-full" />
+                            <Skeleton className="h-12 w-full" />
+                            <Skeleton className="h-12 w-full" />
                         </div>
                     }>
                         {members && members.length > 0 ? (
                             <div className="space-y-4">
                                 {sortedMembers.map((member: Member) => (
-                                    <OrgMember key={member.id} Member={member} currentUserCanManage={userCanManage} />
+                                    <OrgMember key={member.id} Member={member} currentUserRole={currentUserRole as MilikiRole} />
                                 ))}
                             </div>
                         ) : (
                             <div className="text-center py-8 text-muted-foreground">
+                                <UsersIcon className="h-8 w-8 mx-auto mb-2 opacity-50" />
                                 <p>No members found.</p>
-                                <p>Add a member to the organization to get started.</p>
-                                <Button variant="outline" size="sm">
-                                    <PlusIcon className="size-4" />
-                                    Add Member
-                                </Button>
+                                {userCanManage && (
+                                    <p className="text-sm mt-1">Send an invitation to add members to your organization.</p>
+                                )}
                             </div>
                         )}
                     </Suspense>

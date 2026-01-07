@@ -43,13 +43,13 @@ const OrgCard = ({ org, activeOrg }: { org: Organization, activeOrg: string }) =
                 <Suspense fallback={<Button variant="outline" disabled className="w-full">Loading...</Button>}>
                     {isActive ? (
                         <Button asChild variant="secondary" className="w-full">
-                            <Link href={`/org/my-orgs/${org.id}`}>View Organization</Link>
+                            <Link href={`/org/my-orgs/${org.slug}`}>View Organization</Link>
                         </Button>
                     ) : (
                         <div className="flex w-full gap-2">
                             <ActivateOrg organizationId={org.id} />
                             <Button asChild variant="outline" className="flex-1">
-                                <Link href={`/org/my-orgs/${org.id}`}>Details</Link>
+                                <Link href={`/org/my-orgs/${org.slug}`}>Details</Link>
                             </Button>
                         </div>
                     )}

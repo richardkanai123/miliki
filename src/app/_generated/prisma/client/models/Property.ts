@@ -20,20 +20,8 @@ export type PropertyModel = runtime.Types.Result.DefaultSelection<Prisma.$Proper
 
 export type AggregateProperty = {
   _count: PropertyCountAggregateOutputType | null
-  _avg: PropertyAvgAggregateOutputType | null
-  _sum: PropertySumAggregateOutputType | null
   _min: PropertyMinAggregateOutputType | null
   _max: PropertyMaxAggregateOutputType | null
-}
-
-export type PropertyAvgAggregateOutputType = {
-  latitude: number | null
-  longitude: number | null
-}
-
-export type PropertySumAggregateOutputType = {
-  latitude: number | null
-  longitude: number | null
 }
 
 export type PropertyMinAggregateOutputType = {
@@ -45,8 +33,6 @@ export type PropertyMinAggregateOutputType = {
   city: string | null
   county: string | null
   postalCode: string | null
-  latitude: number | null
-  longitude: number | null
   organizationId: string | null
   managerId: string | null
   isActive: boolean | null
@@ -63,8 +49,6 @@ export type PropertyMaxAggregateOutputType = {
   city: string | null
   county: string | null
   postalCode: string | null
-  latitude: number | null
-  longitude: number | null
   organizationId: string | null
   managerId: string | null
   isActive: boolean | null
@@ -81,8 +65,6 @@ export type PropertyCountAggregateOutputType = {
   city: number
   county: number
   postalCode: number
-  latitude: number
-  longitude: number
   images: number
   organizationId: number
   managerId: number
@@ -93,16 +75,6 @@ export type PropertyCountAggregateOutputType = {
 }
 
 
-export type PropertyAvgAggregateInputType = {
-  latitude?: true
-  longitude?: true
-}
-
-export type PropertySumAggregateInputType = {
-  latitude?: true
-  longitude?: true
-}
-
 export type PropertyMinAggregateInputType = {
   id?: true
   name?: true
@@ -112,8 +84,6 @@ export type PropertyMinAggregateInputType = {
   city?: true
   county?: true
   postalCode?: true
-  latitude?: true
-  longitude?: true
   organizationId?: true
   managerId?: true
   isActive?: true
@@ -130,8 +100,6 @@ export type PropertyMaxAggregateInputType = {
   city?: true
   county?: true
   postalCode?: true
-  latitude?: true
-  longitude?: true
   organizationId?: true
   managerId?: true
   isActive?: true
@@ -148,8 +116,6 @@ export type PropertyCountAggregateInputType = {
   city?: true
   county?: true
   postalCode?: true
-  latitude?: true
-  longitude?: true
   images?: true
   organizationId?: true
   managerId?: true
@@ -197,18 +163,6 @@ export type PropertyAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: PropertyAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: PropertySumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: PropertyMinAggregateInputType
@@ -239,8 +193,6 @@ export type PropertyGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: PropertyCountAggregateInputType | true
-  _avg?: PropertyAvgAggregateInputType
-  _sum?: PropertySumAggregateInputType
   _min?: PropertyMinAggregateInputType
   _max?: PropertyMaxAggregateInputType
 }
@@ -254,8 +206,6 @@ export type PropertyGroupByOutputType = {
   city: string
   county: string
   postalCode: string | null
-  latitude: number | null
-  longitude: number | null
   images: string[]
   organizationId: string
   managerId: string | null
@@ -263,8 +213,6 @@ export type PropertyGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: PropertyCountAggregateOutputType | null
-  _avg: PropertyAvgAggregateOutputType | null
-  _sum: PropertySumAggregateOutputType | null
   _min: PropertyMinAggregateOutputType | null
   _max: PropertyMaxAggregateOutputType | null
 }
@@ -296,8 +244,6 @@ export type PropertyWhereInput = {
   city?: Prisma.StringFilter<"Property"> | string
   county?: Prisma.StringFilter<"Property"> | string
   postalCode?: Prisma.StringNullableFilter<"Property"> | string | null
-  latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   images?: Prisma.StringNullableListFilter<"Property">
   organizationId?: Prisma.StringFilter<"Property"> | string
   managerId?: Prisma.StringNullableFilter<"Property"> | string | null
@@ -319,8 +265,6 @@ export type PropertyOrderByWithRelationInput = {
   city?: Prisma.SortOrder
   county?: Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
-  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   managerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -345,8 +289,6 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   city?: Prisma.StringFilter<"Property"> | string
   county?: Prisma.StringFilter<"Property"> | string
   postalCode?: Prisma.StringNullableFilter<"Property"> | string | null
-  latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   images?: Prisma.StringNullableListFilter<"Property">
   organizationId?: Prisma.StringFilter<"Property"> | string
   managerId?: Prisma.StringNullableFilter<"Property"> | string | null
@@ -368,8 +310,6 @@ export type PropertyOrderByWithAggregationInput = {
   city?: Prisma.SortOrder
   county?: Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
-  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   managerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -377,10 +317,8 @@ export type PropertyOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PropertyCountOrderByAggregateInput
-  _avg?: Prisma.PropertyAvgOrderByAggregateInput
   _max?: Prisma.PropertyMaxOrderByAggregateInput
   _min?: Prisma.PropertyMinOrderByAggregateInput
-  _sum?: Prisma.PropertySumOrderByAggregateInput
 }
 
 export type PropertyScalarWhereWithAggregatesInput = {
@@ -395,8 +333,6 @@ export type PropertyScalarWhereWithAggregatesInput = {
   city?: Prisma.StringWithAggregatesFilter<"Property"> | string
   county?: Prisma.StringWithAggregatesFilter<"Property"> | string
   postalCode?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
-  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Property"> | number | null
-  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Property"> | number | null
   images?: Prisma.StringNullableListFilter<"Property">
   organizationId?: Prisma.StringWithAggregatesFilter<"Property"> | string
   managerId?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
@@ -414,8 +350,6 @@ export type PropertyCreateInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   isActive?: boolean
   createdAt?: Date | string
@@ -435,8 +369,6 @@ export type PropertyUncheckedCreateInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   managerId?: string | null
@@ -456,8 +388,6 @@ export type PropertyUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -477,8 +407,6 @@ export type PropertyUncheckedUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -498,8 +426,6 @@ export type PropertyCreateManyInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   managerId?: string | null
@@ -517,8 +443,6 @@ export type PropertyUpdateManyMutationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -534,8 +458,6 @@ export type PropertyUncheckedUpdateManyInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -571,19 +493,12 @@ export type PropertyCountOrderByAggregateInput = {
   city?: Prisma.SortOrder
   county?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
   images?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   managerId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type PropertyAvgOrderByAggregateInput = {
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
 }
 
 export type PropertyMaxOrderByAggregateInput = {
@@ -595,8 +510,6 @@ export type PropertyMaxOrderByAggregateInput = {
   city?: Prisma.SortOrder
   county?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   managerId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -613,18 +526,11 @@ export type PropertyMinOrderByAggregateInput = {
   city?: Prisma.SortOrder
   county?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   managerId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type PropertySumOrderByAggregateInput = {
-  latitude?: Prisma.SortOrder
-  longitude?: Prisma.SortOrder
 }
 
 export type PropertyScalarRelationFilter = {
@@ -724,14 +630,6 @@ export type EnumPropertyTypeFieldUpdateOperationsInput = {
   set?: $Enums.PropertyType
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type PropertyUpdateimagesInput = {
   set?: string[]
   push?: string | string[]
@@ -774,8 +672,6 @@ export type PropertyCreateWithoutOrganizationInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   isActive?: boolean
   createdAt?: Date | string
@@ -794,8 +690,6 @@ export type PropertyUncheckedCreateWithoutOrganizationInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   managerId?: string | null
   isActive?: boolean
@@ -843,8 +737,6 @@ export type PropertyScalarWhereInput = {
   city?: Prisma.StringFilter<"Property"> | string
   county?: Prisma.StringFilter<"Property"> | string
   postalCode?: Prisma.StringNullableFilter<"Property"> | string | null
-  latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   images?: Prisma.StringNullableListFilter<"Property">
   organizationId?: Prisma.StringFilter<"Property"> | string
   managerId?: Prisma.StringNullableFilter<"Property"> | string | null
@@ -862,8 +754,6 @@ export type PropertyCreateWithoutManagerInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   isActive?: boolean
   createdAt?: Date | string
@@ -882,8 +772,6 @@ export type PropertyUncheckedCreateWithoutManagerInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   isActive?: boolean
@@ -928,8 +816,6 @@ export type PropertyCreateWithoutAmenitiesInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   isActive?: boolean
   createdAt?: Date | string
@@ -948,8 +834,6 @@ export type PropertyUncheckedCreateWithoutAmenitiesInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   managerId?: string | null
@@ -984,8 +868,6 @@ export type PropertyUpdateWithoutAmenitiesInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1004,8 +886,6 @@ export type PropertyUncheckedUpdateWithoutAmenitiesInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1024,8 +904,6 @@ export type PropertyCreateWithoutUnitsInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   isActive?: boolean
   createdAt?: Date | string
@@ -1044,8 +922,6 @@ export type PropertyUncheckedCreateWithoutUnitsInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   managerId?: string | null
@@ -1080,8 +956,6 @@ export type PropertyUpdateWithoutUnitsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1100,8 +974,6 @@ export type PropertyUncheckedUpdateWithoutUnitsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1120,8 +992,6 @@ export type PropertyCreateManyOrganizationInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   managerId?: string | null
   isActive?: boolean
@@ -1138,8 +1008,6 @@ export type PropertyUpdateWithoutOrganizationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1158,8 +1026,6 @@ export type PropertyUncheckedUpdateWithoutOrganizationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1178,8 +1044,6 @@ export type PropertyUncheckedUpdateManyWithoutOrganizationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1196,8 +1060,6 @@ export type PropertyCreateManyManagerInput = {
   city: string
   county: string
   postalCode?: string | null
-  latitude?: number | null
-  longitude?: number | null
   images?: Prisma.PropertyCreateimagesInput | string[]
   organizationId: string
   isActive?: boolean
@@ -1214,8 +1076,6 @@ export type PropertyUpdateWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1234,8 +1094,6 @@ export type PropertyUncheckedUpdateWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1254,8 +1112,6 @@ export type PropertyUncheckedUpdateManyWithoutManagerInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   county?: Prisma.StringFieldUpdateOperationsInput | string
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.PropertyUpdateimagesInput | string[]
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1312,8 +1168,6 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   city?: boolean
   county?: boolean
   postalCode?: boolean
-  latitude?: boolean
-  longitude?: boolean
   images?: boolean
   organizationId?: boolean
   managerId?: boolean
@@ -1336,8 +1190,6 @@ export type PropertySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   city?: boolean
   county?: boolean
   postalCode?: boolean
-  latitude?: boolean
-  longitude?: boolean
   images?: boolean
   organizationId?: boolean
   managerId?: boolean
@@ -1357,8 +1209,6 @@ export type PropertySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   city?: boolean
   county?: boolean
   postalCode?: boolean
-  latitude?: boolean
-  longitude?: boolean
   images?: boolean
   organizationId?: boolean
   managerId?: boolean
@@ -1378,8 +1228,6 @@ export type PropertySelectScalar = {
   city?: boolean
   county?: boolean
   postalCode?: boolean
-  latitude?: boolean
-  longitude?: boolean
   images?: boolean
   organizationId?: boolean
   managerId?: boolean
@@ -1388,7 +1236,7 @@ export type PropertySelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "type" | "address" | "city" | "county" | "postalCode" | "latitude" | "longitude" | "images" | "organizationId" | "managerId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
+export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "type" | "address" | "city" | "county" | "postalCode" | "images" | "organizationId" | "managerId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
 export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   manager?: boolean | Prisma.Property$managerArgs<ExtArgs>
@@ -1422,8 +1270,6 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     city: string
     county: string
     postalCode: string | null
-    latitude: number | null
-    longitude: number | null
     images: string[]
     organizationId: string
     managerId: string | null
@@ -1865,8 +1711,6 @@ export interface PropertyFieldRefs {
   readonly city: Prisma.FieldRef<"Property", 'String'>
   readonly county: Prisma.FieldRef<"Property", 'String'>
   readonly postalCode: Prisma.FieldRef<"Property", 'String'>
-  readonly latitude: Prisma.FieldRef<"Property", 'Float'>
-  readonly longitude: Prisma.FieldRef<"Property", 'Float'>
   readonly images: Prisma.FieldRef<"Property", 'String[]'>
   readonly organizationId: Prisma.FieldRef<"Property", 'String'>
   readonly managerId: Prisma.FieldRef<"Property", 'String'>

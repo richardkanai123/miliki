@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { kenyaCounties } from "../counties";
 
 // PropertyType enum matching Prisma
 export const PropertyTypeEnum = z.enum([
@@ -20,9 +21,7 @@ export const createPropertySchema = z.object({
   name: z.string().min(1, "Property name is required").max(255),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
-  county: z.string().min(1, "County is required"), // Kenyan counties
-  organizationId: z.string(),
-  // Optional fields with defaults handled by Prisma
+  county: z.enum(kenyaCounties as [string, ...string[]]), // Kenyan counties
   description: z.string().optional(),
   type: PropertyTypeEnum.default("APARTMENT"),
   postalCode: z.string().optional(),

@@ -32,7 +32,7 @@ const ActivateOrg = ({ organizationId }: { organizationId: string }) => {
                     throw new Error(error.message)
                 }
                 toast.info(`${data.name} is now your active organization`)
-                router.refresh()
+                router.push(`/org/my-orgs/${data.slug}`)
             } catch (error) {
                 toast.error(error instanceof Error ? error.message : "An unknown error occurred")
             }

@@ -42,16 +42,17 @@ const CreateOrgForm = ({ userId }: { userId: string }) => {
                 return
             }
 
-            const orgId = data?.id
+            const orgSlug = data?.slug
             const orgName = data?.name
-            if (orgId) {
-                await organization.setActive({ organizationId: orgId })
+
+            if (orgSlug) {
+                await organization.setActive({ organizationSlug: orgSlug })
                 toast.success("Organization created successfully", {
                     description: `You are now the owner of ${orgName}`,
                 })
                 form.reset()
                 router.prefetch('/org/my-orgs')
-                router.push(`/org/my-orgs/${orgId}`)
+                router.push(`/org/my-orgs/${orgSlug}`)
             }
             else {
                 toast.error("Unable to create organization", {

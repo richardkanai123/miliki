@@ -52,27 +52,22 @@ import {
     CheckIcon,
 } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
-
-interface Organization {
-    id: string
-    name: string
-}
-
+import { kenyaCounties } from "@/lib/counties"
 interface Manager {
     id: string
     name: string
+    image: string
 }
 
 interface CreatePropertyFormProps {
-    organizations: Organization[]
-    managers: Manager[]
+    managers?: Manager[]
 }
 
-const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps) => {
-    const [orgOpen, setOrgOpen] = useState(false)
+const CreatePropertyForm = ({ managers }: CreatePropertyFormProps) => {
+    // const [orgOpen, setOrgOpen] = useState(false)
     const [managerOpen, setManagerOpen] = useState(false)
 
-    const orgTriggerRef = useRef<HTMLButtonElement>(null)
+    // const orgTriggerRef = useRef<HTMLButtonElement>(null)
     const managerTriggerRef = useRef<HTMLButtonElement>(null)
     // const [orgPopoverWidth, setOrgPopoverWidth] = useState<number>()
     // const [managerPopoverWidth, setManagerPopoverWidth] = useState<number>()
@@ -112,12 +107,11 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
             description: "",
             address: "",
             city: "",
-            county: "",
+            county: kenyaCounties[0],
             postalCode: "",
             type: "APARTMENT",
-            organizationId: organizations[0]?.id ?? "",
+            images: [],
             managerId: undefined,
-            images: [""],
             isActive: true,
         }
     })
@@ -149,83 +143,8 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
                             <FieldDescription className="mt-1">
                                 Start with the essentials—name, type, and a short description.
                             </FieldDescription>
-
                             <FieldGroup className="mt-6">
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                    <Controller
-                                        name="organizationId"
-                                        control={form.control}
-                                        render={({ field, fieldState }) => (
-                                            <Field data-invalid={fieldState.invalid} className="space-y-2">
-                                                <FieldLabel htmlFor="create-property-organization" className="text-sm font-medium">
-                                                    Organization <span className="text-destructive">*</span>
-                                                </FieldLabel>
-                                                <Popover open={orgOpen} onOpenChange={setOrgOpen}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            id="create-property-organization"
-                                                            ref={orgTriggerRef}
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={orgOpen}
-                                                            aria-invalid={fieldState.invalid}
-                                                            disabled={!organizations.length}
-                                                            className={cn(
-                                                                "w-full justify-between h-10",
-                                                                (!field.value || !organizations.length) && "text-muted-foreground"
-                                                            )}
-                                                        >
-                                                            <span className="flex items-center gap-2 truncate">
-                                                                {!!field.value && organizations.length ? (
-                                                                    <CheckIcon className="h-4 w-4 text-muted-foreground" />
-                                                                ) : null}
-                                                                <span className="truncate">
-                                                                    {!organizations.length
-                                                                        ? "No organizations available"
-                                                                        : field.value
-                                                                            ? organizations.find((org) => org.id === field.value)?.name
-                                                                            : "Select an organization"}
-                                                                </span>
-                                                            </span>
-                                                            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent
-                                                        // style={orgPopoverWidth ? { width: orgPopoverWidth } : undefined}
-                                                        className="max-w-[calc(100vw-2rem)] p-0"
-                                                        align="start"
-                                                    >
-                                                        <Command>
-                                                            <CommandInput placeholder="Search organizations..." className="h-9" />
-                                                            <CommandList>
-                                                                <CommandEmpty>
-                                                                    {organizations.length ? "No organization found." : "No organizations available."}
-                                                                </CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {organizations.map((org) => (
-                                                                        <CommandItem
-                                                                            key={org.id}
-                                                                            value={`${org.name} ${org.id}`}
-                                                                            data-checked={field.value === org.id}
-                                                                            onSelect={() => {
-                                                                                field.onChange(org.id)
-                                                                                setOrgOpen(false)
-                                                                            }}
-                                                                        >
-                                                                            {org.name}
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                                {fieldState.invalid && (
-                                                    <FieldError errors={[fieldState.error]} className="text-sm" />
-                                                )}
-                                            </Field>
-                                        )}
-                                    />
                                     <Controller
                                         name="type"
                                         control={form.control}
@@ -445,7 +364,7 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
                                                             role="combobox"
                                                             aria-expanded={managerOpen}
                                                             aria-invalid={fieldState.invalid}
-                                                            disabled={!managers.length && !field.value}
+                                                            disabled={!managers?.length && !field.value}
                                                             className={cn(
                                                                 "w-full justify-between h-10",
                                                                 !field.value && "text-muted-foreground"
@@ -457,10 +376,10 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
                                                                     <CheckIcon className="h-4 w-4 text-muted-foreground" />
                                                                 ) : null}
                                                                 <span className="truncate">
-                                                                    {!managers.length && !field.value
+                                                                    {!managers?.length && !field.value
                                                                         ? "No managers available"
                                                                         : field.value
-                                                                            ? managers.find((manager) => manager.id === field.value)?.name
+                                                                            ? managers?.find((manager) => manager.id === field.value)?.name
                                                                             : "Select a manager"}
                                                                 </span>
                                                             </span>
@@ -476,7 +395,7 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
                                                             <CommandInput placeholder="Search managers..." className="h-9" />
                                                             <CommandList>
                                                                 <CommandEmpty>
-                                                                    {managers.length ? "No manager found." : "No managers available."}
+                                                                    {managers?.length ? "No manager found." : "No managers available."}
                                                                 </CommandEmpty>
                                                                 <CommandGroup>
                                                                     <CommandItem
@@ -489,7 +408,7 @@ const CreatePropertyForm = ({ organizations, managers }: CreatePropertyFormProps
                                                                     >
                                                                         No manager (unassigned)
                                                                     </CommandItem>
-                                                                    {managers.map((manager) => (
+                                                                    {managers?.map((manager) => (
                                                                         <CommandItem
                                                                             key={manager.id}
                                                                             value={`${manager.name} ${manager.id}`}
