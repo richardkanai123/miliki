@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 import type { CreatePropertyInput } from "@/lib/validations/create-property-schema"
 import { createPropertySchema } from "@/lib/validations/create-property-schema"
 import { hasPermission } from "@/lib/permission-helpers"
+import {  updateTag } from "next/cache"
 
 export async function addProperty(property: CreatePropertyInput) {
 try {
@@ -36,6 +37,9 @@ try {
             name: true,
         }
     })
+
+    const cacheKey = `properties-by-org-${activeOrganizationId}`
+    updateTag(cacheKey)
     
     return { message: `${newProperty.name} added successfully`, success: true, property: newProperty }
  

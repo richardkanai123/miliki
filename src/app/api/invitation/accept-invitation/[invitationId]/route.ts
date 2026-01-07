@@ -29,7 +29,7 @@ export async function GET(
     }
 
     const orgid = res.invitation.organizationId
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/org/my-orgs/${orgid}`)
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/org/${orgid}`)
    } catch (error) {
     console.error(error)
     if (error instanceof Error) {

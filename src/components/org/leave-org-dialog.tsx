@@ -28,7 +28,7 @@ const LeaveOrgDialog = ({ orgId }: { orgId: string }) => {
                     onSuccess: () => {
                         toast.success("You have left the organization")
                         setIsOpen(false)
-                        router.push("/org/my-orgs")
+                        router.push("/org")
                         router.refresh()
                     },
                     onError: (error) => {

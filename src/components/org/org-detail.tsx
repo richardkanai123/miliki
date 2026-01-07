@@ -11,6 +11,7 @@ import { Button } from "../ui/button"
 import OrgMember from "./org-member"
 import { Skeleton } from "../ui/skeleton"
 import { getRoleDisplayName, type MilikiRole } from "@/lib/roles"
+import { Invitation } from "@/app/_generated/prisma/client/client"
 
 interface OrgDetailProps {
     params: Promise<{ slug: string }>
@@ -149,7 +150,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">
-                                {invitations?.length || 0}
+                                {invitations.filter((invitation: Invitation) => invitation.status === 'pending').length}
                             </div>
                             <p className="text-xs text-muted-foreground mt-1">
                                 Awaiting acceptance

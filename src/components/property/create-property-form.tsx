@@ -53,6 +53,9 @@ import {
 } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
 import { kenyaCounties } from "@/lib/counties"
+import { addProperty } from "@/lib/dal/properties/add-property"
+import { toast } from "sonner"
+import { usePathname, useRouter } from "next/navigation"
 interface Manager {
     id: string
     name: string
@@ -66,7 +69,8 @@ interface CreatePropertyFormProps {
 const CreatePropertyForm = ({ managers }: CreatePropertyFormProps) => {
     // const [orgOpen, setOrgOpen] = useState(false)
     const [managerOpen, setManagerOpen] = useState(false)
-
+    const router = useRouter()
+    const pathname = usePathname()
     // const orgTriggerRef = useRef<HTMLButtonElement>(null)
     const managerTriggerRef = useRef<HTMLButtonElement>(null)
     // const [orgPopoverWidth, setOrgPopoverWidth] = useState<number>()
@@ -116,8 +120,29 @@ const CreatePropertyForm = ({ managers }: CreatePropertyFormProps) => {
         }
     })
 
-    const handleSubmit = (data: CreatePropertyFormValues) => {
+    const handleSubmit = async (data: CreatePropertyFormValues) => {
         console.log(data)
+        try {
+            const isValid = createPropertySchema.safeParse(data)
+            if (!isValid.success) {
+                toast.error(isValid.error.message)
+                return
+            }
+            const { message, success, property } = await addProperty(isValid.data)
+
+            if (!success) {
+                toast.error(message)
+                return
+            }
+            form.reset()
+            toast.success(message)
+
+            const propertySlug = property?.id
+            router.push(`${pathname}/success?property=${propertySlug}`)
+        } catch (error) {
+            console.error(error)
+            toast.error(error instanceof Error ? error.message : "An unknown error occurred")
+        }
     }
 
     return (
@@ -125,7 +150,9 @@ const CreatePropertyForm = ({ managers }: CreatePropertyFormProps) => {
             <CardHeader className="space-y-2 border-b bg-muted/20">
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                        <CardTitle className="text-2xl font-bold tracking-tight">Create Property</CardTitle>
+                        <CardTitle className="text-2xl font-bold tracking-tight">
+                            New Property
+                        </CardTitle>
                         <CardDescription>
                             Add a new property to your organization. Fields marked with <span className="text-destructive">*</span> are required.
                         </CardDescription>

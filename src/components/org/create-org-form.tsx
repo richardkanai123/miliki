@@ -52,7 +52,7 @@ const CreateOrgForm = ({ userId }: { userId: string }) => {
                 })
                 form.reset()
                 router.prefetch('/org/my-orgs')
-                router.push(`/org/my-orgs/${orgSlug}`)
+                router.push(`/org/${orgSlug}`)
             }
             else {
                 toast.error("Unable to create organization", {

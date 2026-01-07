@@ -42,7 +42,7 @@ const DeleteOrgDialog = ({ organizationId, organizationName }: { organizationId:
                 toast.success(`Organization ${data.name} deleted successfully`)
                 setErrorMessage(null)
                 setOpen(false)
-                router.push("/org/my-orgs")
+                router.push("/org")
             } catch (error) {
                 const message = error instanceof Error ? error.message : "An unknown error occurred"
                 toast.error(message)

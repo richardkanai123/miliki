@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { canManageRole, getRoleDisplayName, type MilikiRole } from "@/lib/roles";
 import { Badge } from "@/components/ui/badge";
 import ChangeMemberRoleDialog from "@/components/org/change-role";
-import LeaveOrgDialog from "./leave-org-dialog";
-import RemoveMemberDialog from "./remove-member-dialog";
+import LeaveOrgDialog from "@/components/org/leave-org-dialog";
+import RemoveMemberDialog from "@/components/org/remove-member-dialog";
 import { useSession } from "@/lib/auth-client";
 
 interface OrgMemberProps {
