@@ -1,24 +1,34 @@
-import DefaultLoader from "@/components/skeletons/default-loader"
-import { getPropertiesByOrg } from "@/lib/dal/properties/get-properties-by-orgid"
-import { Suspense } from "react"
+import { Suspense } from 'react'
+import { PropertyStatsSection } from '@/components/property/property-stats-section'
+import { PropertiesTableSection } from '@/components/property/properties-table-section'
+import TableSkeleton from '@/components/skeletons/table-skeleton'
+import StatsSkeletons from '@/components/skeletons/stats-skeleton'
 
-async function PropertiesContent({ slug }: { slug: string }) {
-    const { properties, message, success } = await getPropertiesByOrg({ slug })
-    console.log(properties, message, success)
-    return (
-        <div className="w-full max-w-4xl mx-auto flex flex-col gap-8 p-6">
-            <h1 className="text-2xl font-bold">Properties List for {slug}</h1>
-            {/* Render properties here */}
-        </div>
-    )
+interface PropertiesPageProps {
+    params: Promise<{ slug: string }>
 }
 
-const PropertiesPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const PropertiesPage = async ({ params }: PropertiesPageProps) => {
     const { slug } = await params
+
     return (
-        <Suspense fallback={<DefaultLoader />}>
-            <PropertiesContent slug={slug} />
-        </Suspense>
+        <div className="space-y-2 p-2">
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold tracking-tight">Properties</h1>
+            </div>
+
+            {/* Stats Cards */}
+            <Suspense fallback={<StatsSkeletons />}>
+                <PropertyStatsSection slug={slug} />
+            </Suspense>
+
+            {/* Data Table */}
+            <div className="bg-card rounded-lg border p-4">
+                <Suspense fallback={<TableSkeleton />}>
+                    <PropertiesTableSection slug={slug} />
+                </Suspense>
+            </div>
+        </div>
     )
 }
 

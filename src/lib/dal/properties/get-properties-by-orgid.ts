@@ -11,7 +11,7 @@ type GetPropertiesParams =
 // Cached function - only fetches data, no auth
 async function fetchPropertiesByOrg(params: GetPropertiesParams) {
     'use cache'
-    const cacheKey = `properties-by-org-${params.slug || params.organizationId}`
+    const cacheKey = `properties-${params.slug || params.organizationId}`
     cacheTag(cacheKey)
 
     // Build the where clause based on which identifier was provided
@@ -30,6 +30,12 @@ async function fetchPropertiesByOrg(params: GetPropertiesParams) {
         where: {
             organizationId: org.id,
         },
+        include: {
+            _count: {
+                select: { units: true }
+            }
+        },
+        orderBy: { createdAt: 'desc' }
     })
     return { org, properties }
 }

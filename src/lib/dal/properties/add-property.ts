@@ -38,7 +38,7 @@ try {
         }
     })
 
-    const cacheKey = `properties-by-org-${activeOrganizationId}`
+    const cacheKey = `properties-${activeOrganizationId}`
     updateTag(cacheKey)
     
     return { message: `${newProperty.name} added successfully`, success: true, property: newProperty }

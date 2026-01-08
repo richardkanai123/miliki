@@ -36,7 +36,7 @@ export async function getPropertyById(propertyId: string) {
             return { message: "You do not have permission to get this property", success: false, property: null }
         }
 
-        // Call the cached function after auth passes
+        
         const property = await fetchPropertyById(propertyId)
         
         if (!property) {
