@@ -162,7 +162,7 @@ export function PropertiesDataTable({
             </div>
 
             {/* Table */}
-            <div className="rounded-md border">
+            <div className="border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -227,8 +227,8 @@ export function PropertiesDataTable({
             {/* Pagination */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-muted-foreground order-2 sm:order-1">
-                    Showing {table.getRowModel().rows.length} of{' '}
-                    {table.getFilteredRowModel().rows.length} property(ies)
+                    Showing {table.getRowModel().rows.length} of {''}
+                    {table.getFilteredRowModel().rows.length}
                 </p>
                 <div className="flex items-center space-x-2 order-1 sm:order-2">
                     <Button

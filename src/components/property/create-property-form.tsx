@@ -56,6 +56,7 @@ import { kenyaCounties } from "@/lib/counties"
 import { addProperty } from "@/lib/dal/properties/add-property"
 import { toast } from "sonner"
 import { usePathname, useRouter } from "next/navigation"
+
 interface Manager {
     id: string
     name: string
@@ -320,13 +321,21 @@ const CreatePropertyForm = ({ managers }: CreatePropertyFormProps) => {
                                                 <FieldLabel htmlFor="create-property-county" className="text-sm font-medium">
                                                     County <span className="text-destructive">*</span>
                                                 </FieldLabel>
-                                                <Input
-                                                    {...field}
-                                                    id="create-property-county"
-                                                    aria-invalid={fieldState.invalid}
-                                                    placeholder="Nairobi County"
-                                                    className="h-10"
-                                                />
+                                                <Select
+                                                    value={field.value}
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <SelectTrigger id="create-property-county" className="w-full h-10">
+                                                        <SelectValue placeholder="Select county" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {kenyaCounties.map((county) => (
+                                                            <SelectItem key={county} value={county}>
+                                                                {county}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
                                                 {fieldState.invalid && (
                                                     <FieldError errors={[fieldState.error]} className="text-sm" />
                                                 )}

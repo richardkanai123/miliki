@@ -1,27 +1,17 @@
+import { PropertyTabsSection } from "@/components/property/property-tabs-section"
+import PropertyDetails from "@/components/property/PropertyDetails"
 import DefaultLoader from "@/components/skeletons/default-loader"
-import { getPropertyById } from "@/lib/dal/properties/get-property-by-id"
+
 import { Suspense } from "react"
-
 interface PageProps {
-    params: Promise<{ propertyid: string }>
+    params: Promise<{ slug: string; propertyid: string }>
 }
 
-async function PropertyContent({ propertyid }: { propertyid: string }) {
-    const { message, success, property } = await getPropertyById(propertyid)
-    if (!success) {
-        return <div>{message}</div>
-    }
-    if (!property) {
-        return <div>Property not found</div>
-    }
-    return <div>PropertyPage {propertyid}</div>
-}
-
-const PropertyPage = async (props: PageProps) => {
-    const { propertyid } = await props.params
+const PropertyPage = async ({ params }: PageProps) => {
+    const { slug, propertyid } = await params
     return (
         <Suspense fallback={<DefaultLoader />}>
-            <PropertyContent propertyid={propertyid} />
+            <PropertyDetails propertyid={propertyid} />
         </Suspense>
     )
 }

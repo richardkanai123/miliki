@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Loader2Icon, MailIcon, UsersIcon } from "lucide-react"
+import { ArrowLeftIcon, Building2Icon, CalendarIcon, Loader2Icon, MailIcon, UsersIcon } from "lucide-react"
+import Link from "next/link"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import SendInvitationDialog from "./send-invitation-dialog"
@@ -80,6 +81,14 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
 
     return (
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8 p-6">
+            <div className="flex items-center gap-2">
+                <Button variant="outline" size="lg" asChild>
+                    <Link className="flex gap-1 items-center align-middle" href={`/org `}>
+                        <ArrowLeftIcon className="h-4 w-4" />
+                        Back to Organizations
+                    </Link>
+                </Button>
+            </div>
             <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Avatar className="h-20 w-20 border-2 border-border">
@@ -99,6 +108,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         </div>
                     </div>
                 </div>
+
                 <div className="flex items-center gap-2">
                     <Badge variant="outline" className="font-mono text-xs">
                         {getRoleDisplayName(currentUserRole as MilikiRole)}
@@ -107,6 +117,22 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                         <LeaveOrgDialog orgId={id} />
                     )}
                 </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+                <Button variant="default" size="lg">
+                    <Link className="flex gap-1 items-center align-middle " href={`/org/${slug}/properties`}>
+                        <Building2Icon className="h-4 w-4" />
+                        View Properties
+                    </Link>
+                </Button>
+
+                <Button variant="default" size="lg">
+                    <Link className="flex gap-1 items-center align-middle " href={`/org/${slug}/tenants`}>
+                        <UsersIcon className="h-4 w-4" />
+                        View Tenants
+                    </Link>
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

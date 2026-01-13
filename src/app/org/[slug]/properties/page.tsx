@@ -12,9 +12,11 @@ const PropertiesPage = async ({ params }: PropertiesPageProps) => {
     const { slug } = await params
 
     return (
-        <div className="space-y-2 p-2">
+        <div className="p-2">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold tracking-tight">Properties</h1>
+                <h1 className="text-2xl font-bold tracking-tight">
+                    {slug} Properties
+                </h1>
             </div>
 
             {/* Stats Cards */}

@@ -66,12 +66,24 @@ export const createColumns = (slug: string): ColumnDef<PropertyWithCount>[] => [
     },
     {
         accessorKey: 'city',
-        header: 'Location',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                className="-ml-4"
+            >
+                City
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <span className="text-muted-foreground">
-                {row.original.city}, {row.original.county}
+                {row.original.city}
             </span>
         ),
+        filterFn: (row, _, value) => {
+            return row.original.city.toLowerCase().includes(value.toLowerCase())
+        },
     },
     {
         id: 'units',
@@ -103,23 +115,6 @@ export const createColumns = (slug: string): ColumnDef<PropertyWithCount>[] => [
         },
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id))
-        },
-    },
-    {
-        accessorKey: 'createdAt',
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                className="-ml-4"
-            >
-                Created
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => {
-            const date = row.getValue('createdAt') as Date
-            return <span className="text-muted-foreground">{format(new Date(date), 'MMM d, yyyy')}</span>
         },
     },
     {

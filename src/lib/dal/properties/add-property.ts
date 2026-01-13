@@ -35,14 +35,24 @@ try {
         select:{
             id: true,
             name: true,
+            organizationId: true,
+            organization: {
+                select:{
+                    slug: true,
+                }
+            }
         }
+        
     })
 
     const cacheKey = `properties-${activeOrganizationId}`
+    updateTag(`property-stats-${newProperty.organizationId}`)
+    updateTag(`property-stats-${newProperty.organization.slug}`)
+    updateTag(`properties-${newProperty.organization.slug}`)
+    updateTag(`properties-${newProperty.organizationId}`)
     updateTag(cacheKey)
     
     return { message: `${newProperty.name} added successfully`, success: true, property: newProperty }
- 
 } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Internal server error"
     return { message: errorMessage, success: false, property: null }
