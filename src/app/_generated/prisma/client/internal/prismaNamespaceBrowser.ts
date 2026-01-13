@@ -238,6 +238,7 @@ export const UnitScalarFieldEnum = {
   squareMeters: 'squareMeters',
   images: 'images',
   status: 'status',
+  type: 'type',
   isListed: 'isListed',
   listingTitle: 'listingTitle',
   listingDescription: 'listingDescription',

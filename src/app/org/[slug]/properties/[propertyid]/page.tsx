@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 const PropertyPage = async ({ params }: PageProps) => {
-    const { slug, propertyid } = await params
+    const { propertyid } = await params
     return (
         <Suspense fallback={<DefaultLoader />}>
             <PropertyDetails propertyid={propertyid} />

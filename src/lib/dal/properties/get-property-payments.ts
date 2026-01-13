@@ -98,6 +98,7 @@ export async function getPropertyPayments(propertyId: string, limit?: number) {
         return { message: "Payments fetched successfully", success: true, payments }
     } catch (error) {
         console.error("Error fetching property payments:", error)
-        return { message: "An error occurred while fetching payments", success: false, payments: [] }
+        const errorMessage = error instanceof Error ? error.message : "Unknown error"
+        return { message: errorMessage, success: false, payments: [] }
     }
 }

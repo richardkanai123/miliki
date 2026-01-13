@@ -9,6 +9,8 @@ import { PropertyDetailStats } from './detail/property-detail-stats'
 import { PropertyAlerts } from './detail/property-alerts'
 import { PropertyTabsSection } from './property-tabs-section'
 import { Skeleton } from '@/components/ui/skeleton'
+import TabsSkeleton from '../skeletons/tabs-skeleton'
+import StatsSkeletons from '../skeletons/stats-skeleton'
 
 interface PropertyDetailsProps {
     propertyid: string
@@ -33,12 +35,12 @@ async function PropertyDetails({ propertyid }: PropertyDetailsProps) {
             <PropertyHeader property={property} />
 
             {/* Stats & Alerts Section - single fetch for both */}
-            <Suspense fallback={<StatsSkeletonInline />}>
+            <Suspense fallback={<StatsSkeletons />}>
                 <PropertyStatsAndAlerts propertyId={propertyid} />
             </Suspense>
 
             {/* Tabs with Tables - separate suspense for heavy data */}
-            <Suspense fallback={<TabsSkeletonInline />}>
+            <Suspense fallback={<TabsSkeleton />}>
                 <PropertyDataSection
                     propertyId={propertyid}
                     units={property.units}
@@ -90,24 +92,7 @@ async function PropertyDataSection({
     )
 }
 
-// Inline skeletons
-function StatsSkeletonInline() {
-    return (
-        <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="h-[90px]" />
-            ))}
-        </div>
-    )
-}
 
-function TabsSkeletonInline() {
-    return (
-        <div className="space-y-4">
-            <Skeleton className="h-10 w-96" />
-            <Skeleton className="h-[400px] w-full" />
-        </div>
-    )
-}
+
 
 export default PropertyDetails

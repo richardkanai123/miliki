@@ -218,6 +218,28 @@ enum UnitStatus {
   RESERVED
 }
 
+enum UnitType {
+  APARTMENT
+  HOUSE
+  TOWNHOUSE
+  STUDIO
+  COMMERCIAL
+  BEDSITTER
+  SINGLE_ROOM
+  DOUBLE_ROOM
+  TRIPLE_ROOM
+  QUADRUPLE_ROOM
+  QUINQUEPLE_ROOM
+  SEXTPLE_ROOM
+  SEPTEMBLE_ROOM
+  OCTOPLE_ROOM
+  NONUPLE_ROOM
+  DECATLE_ROOM
+  UNDETLE_ROOM
+  VIGINTILE_ROOM
+  OTHER
+}
+
 /// Unit represents a rentable space - listings happen at this level
 model Unit {
   id                 String  @id @default(cuid())
@@ -239,6 +261,9 @@ model Unit {
 
   // Status
   status UnitStatus @default(VACANT)
+
+  // type of unit
+  type UnitType @default(APARTMENT)
 
   // Listing - Units are listed individually for house-hunting
   isListed           Boolean   @default(false)

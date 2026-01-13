@@ -1869,6 +1869,7 @@ export const UnitScalarFieldEnum = {
   squareMeters: 'squareMeters',
   images: 'images',
   status: 'status',
+  type: 'type',
   isListed: 'isListed',
   listingTitle: 'listingTitle',
   listingDescription: 'listingDescription',
@@ -2133,6 +2134,20 @@ export type EnumUnitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'UnitStatus[]'
  */
 export type ListEnumUnitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UnitStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UnitType'
+ */
+export type EnumUnitTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UnitType'>
+    
+
+
+/**
+ * Reference to a field of type 'UnitType[]'
+ */
+export type ListEnumUnitTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UnitType[]'>
     
 
 

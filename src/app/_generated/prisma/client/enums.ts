@@ -33,6 +33,31 @@ export const UnitStatus = {
 export type UnitStatus = (typeof UnitStatus)[keyof typeof UnitStatus]
 
 
+export const UnitType = {
+  APARTMENT: 'APARTMENT',
+  HOUSE: 'HOUSE',
+  TOWNHOUSE: 'TOWNHOUSE',
+  STUDIO: 'STUDIO',
+  COMMERCIAL: 'COMMERCIAL',
+  BEDSITTER: 'BEDSITTER',
+  SINGLE_ROOM: 'SINGLE_ROOM',
+  DOUBLE_ROOM: 'DOUBLE_ROOM',
+  TRIPLE_ROOM: 'TRIPLE_ROOM',
+  QUADRUPLE_ROOM: 'QUADRUPLE_ROOM',
+  QUINQUEPLE_ROOM: 'QUINQUEPLE_ROOM',
+  SEXTPLE_ROOM: 'SEXTPLE_ROOM',
+  SEPTEMBLE_ROOM: 'SEPTEMBLE_ROOM',
+  OCTOPLE_ROOM: 'OCTOPLE_ROOM',
+  NONUPLE_ROOM: 'NONUPLE_ROOM',
+  DECATLE_ROOM: 'DECATLE_ROOM',
+  UNDETLE_ROOM: 'UNDETLE_ROOM',
+  VIGINTILE_ROOM: 'VIGINTILE_ROOM',
+  OTHER: 'OTHER'
+} as const
+
+export type UnitType = (typeof UnitType)[keyof typeof UnitType]
+
+
 export const TenancyStatus = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',

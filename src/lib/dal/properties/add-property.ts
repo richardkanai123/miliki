@@ -26,10 +26,17 @@ try {
         return { message: "You do not have permission to add a property. Please contact your administrator to be granted permission.", success: false, property: null }
     }
 
-    const validatedData = createPropertySchema.parse(property)
+    const validatedData = createPropertySchema.safeParse(property)
+
+    if (!validatedData.success) {
+        return { message: "Invalid property data, please check the errors", success: false, property: null, }
+    }
+
+
+
     const newProperty = await prisma.property.create({
         data: {
-            ...validatedData,
+            ...validatedData.data,
             organizationId: activeOrganizationId,
         },
         select:{

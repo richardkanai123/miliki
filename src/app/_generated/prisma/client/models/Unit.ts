@@ -53,6 +53,7 @@ export type UnitMinAggregateOutputType = {
   bathrooms: number | null
   squareMeters: number | null
   status: $Enums.UnitStatus | null
+  type: $Enums.UnitType | null
   isListed: boolean | null
   listingTitle: string | null
   listingDescription: string | null
@@ -73,6 +74,7 @@ export type UnitMaxAggregateOutputType = {
   bathrooms: number | null
   squareMeters: number | null
   status: $Enums.UnitStatus | null
+  type: $Enums.UnitType | null
   isListed: boolean | null
   listingTitle: string | null
   listingDescription: string | null
@@ -94,6 +96,7 @@ export type UnitCountAggregateOutputType = {
   squareMeters: number
   images: number
   status: number
+  type: number
   isListed: number
   listingTitle: number
   listingDescription: number
@@ -132,6 +135,7 @@ export type UnitMinAggregateInputType = {
   bathrooms?: true
   squareMeters?: true
   status?: true
+  type?: true
   isListed?: true
   listingTitle?: true
   listingDescription?: true
@@ -152,6 +156,7 @@ export type UnitMaxAggregateInputType = {
   bathrooms?: true
   squareMeters?: true
   status?: true
+  type?: true
   isListed?: true
   listingTitle?: true
   listingDescription?: true
@@ -173,6 +178,7 @@ export type UnitCountAggregateInputType = {
   squareMeters?: true
   images?: true
   status?: true
+  type?: true
   isListed?: true
   listingTitle?: true
   listingDescription?: true
@@ -281,6 +287,7 @@ export type UnitGroupByOutputType = {
   squareMeters: number | null
   images: string[]
   status: $Enums.UnitStatus
+  type: $Enums.UnitType
   isListed: boolean
   listingTitle: string | null
   listingDescription: string | null
@@ -325,6 +332,7 @@ export type UnitWhereInput = {
   squareMeters?: Prisma.FloatNullableFilter<"Unit"> | number | null
   images?: Prisma.StringNullableListFilter<"Unit">
   status?: Prisma.EnumUnitStatusFilter<"Unit"> | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFilter<"Unit"> | $Enums.UnitType
   isListed?: Prisma.BoolFilter<"Unit"> | boolean
   listingTitle?: Prisma.StringNullableFilter<"Unit"> | string | null
   listingDescription?: Prisma.StringNullableFilter<"Unit"> | string | null
@@ -349,6 +357,7 @@ export type UnitOrderByWithRelationInput = {
   squareMeters?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   isListed?: Prisma.SortOrder
   listingTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   listingDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -376,6 +385,7 @@ export type UnitWhereUniqueInput = Prisma.AtLeast<{
   squareMeters?: Prisma.FloatNullableFilter<"Unit"> | number | null
   images?: Prisma.StringNullableListFilter<"Unit">
   status?: Prisma.EnumUnitStatusFilter<"Unit"> | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFilter<"Unit"> | $Enums.UnitType
   isListed?: Prisma.BoolFilter<"Unit"> | boolean
   listingTitle?: Prisma.StringNullableFilter<"Unit"> | string | null
   listingDescription?: Prisma.StringNullableFilter<"Unit"> | string | null
@@ -400,6 +410,7 @@ export type UnitOrderByWithAggregationInput = {
   squareMeters?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   isListed?: Prisma.SortOrder
   listingTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   listingDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -429,6 +440,7 @@ export type UnitScalarWhereWithAggregatesInput = {
   squareMeters?: Prisma.FloatNullableWithAggregatesFilter<"Unit"> | number | null
   images?: Prisma.StringNullableListFilter<"Unit">
   status?: Prisma.EnumUnitStatusWithAggregatesFilter<"Unit"> | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeWithAggregatesFilter<"Unit"> | $Enums.UnitType
   isListed?: Prisma.BoolWithAggregatesFilter<"Unit"> | boolean
   listingTitle?: Prisma.StringNullableWithAggregatesFilter<"Unit"> | string | null
   listingDescription?: Prisma.StringNullableWithAggregatesFilter<"Unit"> | string | null
@@ -450,6 +462,7 @@ export type UnitCreateInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -473,6 +486,7 @@ export type UnitUncheckedCreateInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -496,6 +510,7 @@ export type UnitUpdateInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -519,6 +534,7 @@ export type UnitUncheckedUpdateInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -542,6 +558,7 @@ export type UnitCreateManyInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -563,6 +580,7 @@ export type UnitUpdateManyMutationInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -583,6 +601,7 @@ export type UnitUncheckedUpdateManyInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -614,6 +633,7 @@ export type UnitCountOrderByAggregateInput = {
   squareMeters?: Prisma.SortOrder
   images?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   isListed?: Prisma.SortOrder
   listingTitle?: Prisma.SortOrder
   listingDescription?: Prisma.SortOrder
@@ -642,6 +662,7 @@ export type UnitMaxOrderByAggregateInput = {
   bathrooms?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   isListed?: Prisma.SortOrder
   listingTitle?: Prisma.SortOrder
   listingDescription?: Prisma.SortOrder
@@ -662,6 +683,7 @@ export type UnitMinOrderByAggregateInput = {
   bathrooms?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   isListed?: Prisma.SortOrder
   listingTitle?: Prisma.SortOrder
   listingDescription?: Prisma.SortOrder
@@ -771,6 +793,10 @@ export type EnumUnitStatusFieldUpdateOperationsInput = {
   set?: $Enums.UnitStatus
 }
 
+export type EnumUnitTypeFieldUpdateOperationsInput = {
+  set?: $Enums.UnitType
+}
+
 export type UnitCreateNestedOneWithoutAmenitiesInput = {
   create?: Prisma.XOR<Prisma.UnitCreateWithoutAmenitiesInput, Prisma.UnitUncheckedCreateWithoutAmenitiesInput>
   connectOrCreate?: Prisma.UnitCreateOrConnectWithoutAmenitiesInput
@@ -811,6 +837,7 @@ export type UnitCreateWithoutPropertyInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -833,6 +860,7 @@ export type UnitUncheckedCreateWithoutPropertyInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -884,6 +912,7 @@ export type UnitScalarWhereInput = {
   squareMeters?: Prisma.FloatNullableFilter<"Unit"> | number | null
   images?: Prisma.StringNullableListFilter<"Unit">
   status?: Prisma.EnumUnitStatusFilter<"Unit"> | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFilter<"Unit"> | $Enums.UnitType
   isListed?: Prisma.BoolFilter<"Unit"> | boolean
   listingTitle?: Prisma.StringNullableFilter<"Unit"> | string | null
   listingDescription?: Prisma.StringNullableFilter<"Unit"> | string | null
@@ -905,6 +934,7 @@ export type UnitCreateWithoutAmenitiesInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -927,6 +957,7 @@ export type UnitUncheckedCreateWithoutAmenitiesInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -965,6 +996,7 @@ export type UnitUpdateWithoutAmenitiesInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -987,6 +1019,7 @@ export type UnitUncheckedUpdateWithoutAmenitiesInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1009,6 +1042,7 @@ export type UnitCreateWithoutTenanciesInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -1031,6 +1065,7 @@ export type UnitUncheckedCreateWithoutTenanciesInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -1069,6 +1104,7 @@ export type UnitUpdateWithoutTenanciesInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1091,6 +1127,7 @@ export type UnitUncheckedUpdateWithoutTenanciesInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1113,6 +1150,7 @@ export type UnitCreateManyPropertyInput = {
   squareMeters?: number | null
   images?: Prisma.UnitCreateimagesInput | string[]
   status?: $Enums.UnitStatus
+  type?: $Enums.UnitType
   isListed?: boolean
   listingTitle?: string | null
   listingDescription?: string | null
@@ -1133,6 +1171,7 @@ export type UnitUpdateWithoutPropertyInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1155,6 +1194,7 @@ export type UnitUncheckedUpdateWithoutPropertyInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1177,6 +1217,7 @@ export type UnitUncheckedUpdateManyWithoutPropertyInput = {
   squareMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.UnitUpdateimagesInput | string[]
   status?: Prisma.EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
+  type?: Prisma.EnumUnitTypeFieldUpdateOperationsInput | $Enums.UnitType
   isListed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listingTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listingDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1237,6 +1278,7 @@ export type UnitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   squareMeters?: boolean
   images?: boolean
   status?: boolean
+  type?: boolean
   isListed?: boolean
   listingTitle?: boolean
   listingDescription?: boolean
@@ -1262,6 +1304,7 @@ export type UnitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   squareMeters?: boolean
   images?: boolean
   status?: boolean
+  type?: boolean
   isListed?: boolean
   listingTitle?: boolean
   listingDescription?: boolean
@@ -1284,6 +1327,7 @@ export type UnitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   squareMeters?: boolean
   images?: boolean
   status?: boolean
+  type?: boolean
   isListed?: boolean
   listingTitle?: boolean
   listingDescription?: boolean
@@ -1306,6 +1350,7 @@ export type UnitSelectScalar = {
   squareMeters?: boolean
   images?: boolean
   status?: boolean
+  type?: boolean
   isListed?: boolean
   listingTitle?: boolean
   listingDescription?: boolean
@@ -1315,7 +1360,7 @@ export type UnitSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UnitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "locationInProperty" | "rentAmount" | "depositAmount" | "bedrooms" | "bathrooms" | "squareMeters" | "images" | "status" | "isListed" | "listingTitle" | "listingDescription" | "listedAt" | "propertyId" | "createdAt" | "updatedAt", ExtArgs["result"]["unit"]>
+export type UnitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "locationInProperty" | "rentAmount" | "depositAmount" | "bedrooms" | "bathrooms" | "squareMeters" | "images" | "status" | "type" | "isListed" | "listingTitle" | "listingDescription" | "listedAt" | "propertyId" | "createdAt" | "updatedAt", ExtArgs["result"]["unit"]>
 export type UnitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenancies?: boolean | Prisma.Unit$tenanciesArgs<ExtArgs>
@@ -1348,6 +1393,7 @@ export type $UnitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     squareMeters: number | null
     images: string[]
     status: $Enums.UnitStatus
+    type: $Enums.UnitType
     isListed: boolean
     listingTitle: string | null
     listingDescription: string | null
@@ -1792,6 +1838,7 @@ export interface UnitFieldRefs {
   readonly squareMeters: Prisma.FieldRef<"Unit", 'Float'>
   readonly images: Prisma.FieldRef<"Unit", 'String[]'>
   readonly status: Prisma.FieldRef<"Unit", 'UnitStatus'>
+  readonly type: Prisma.FieldRef<"Unit", 'UnitType'>
   readonly isListed: Prisma.FieldRef<"Unit", 'Boolean'>
   readonly listingTitle: Prisma.FieldRef<"Unit", 'String'>
   readonly listingDescription: Prisma.FieldRef<"Unit", 'String'>

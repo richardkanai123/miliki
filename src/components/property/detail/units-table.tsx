@@ -209,7 +209,7 @@ export function UnitsTable({ units, propertyId, slug }: UnitsTableProps) {
                     </Select>
                 </div>
                 <Button asChild size="sm" className="w-full sm:w-auto">
-                    <Link href={`/org/${slug}/properties/${propertyId}/units/create`}>
+                    <Link href={`/org/${slug}/properties/${propertyId}/units/add`}>
                         <Plus className="h-4 w-4 mr-1" />
                         Add Unit
                     </Link>

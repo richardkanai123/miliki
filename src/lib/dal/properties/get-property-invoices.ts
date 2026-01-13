@@ -87,6 +87,7 @@ export async function getPropertyInvoices(propertyId: string, limit?: number) {
         return { message: "Invoices fetched successfully", success: true, invoices }
     } catch (error) {
         console.error("Error fetching property invoices:", error)
-        return { message: "An error occurred while fetching invoices", success: false, invoices: [] }
+        const errorMessage = error instanceof Error ? error.message : "Unknown error"
+        return { message: errorMessage, success: false, invoices: [] }
     }
 }
