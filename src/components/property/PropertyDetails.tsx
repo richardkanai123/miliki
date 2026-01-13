@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { getPropertyDetails } from "@/lib/dal/properties/get-property-details"
-import { getPropertyFinancialStats, type PropertyFinancialStats } from "@/lib/dal/properties/get-property-financial-stats"
+import { getPropertyFinancialStats } from "@/lib/dal/properties/get-property-financial-stats"
 import { getPropertyTenancies } from "@/lib/dal/properties/get-property-tenancies"
 import { getPropertyInvoices } from "@/lib/dal/properties/get-property-invoices"
 import { getPropertyPayments } from "@/lib/dal/properties/get-property-payments"
@@ -8,7 +8,6 @@ import { PropertyHeader } from './detail/property-header'
 import { PropertyDetailStats } from './detail/property-detail-stats'
 import { PropertyAlerts } from './detail/property-alerts'
 import { PropertyTabsSection } from './property-tabs-section'
-import { Skeleton } from '@/components/ui/skeleton'
 import TabsSkeleton from '../skeletons/tabs-skeleton'
 import StatsSkeletons from '../skeletons/stats-skeleton'
 
@@ -30,10 +29,11 @@ async function PropertyDetails({ propertyid }: PropertyDetailsProps) {
     }
 
     return (
-        <div className="space-y-6 p-4">
+        <div className="space-y-4 p-2">
             {/* Property Header */}
             <PropertyHeader property={property} />
 
+            <h2 className="text-lg font-medium">Property Stats & Alerts</h2>
             {/* Stats & Alerts Section - single fetch for both */}
             <Suspense fallback={<StatsSkeletons />}>
                 <PropertyStatsAndAlerts propertyId={propertyid} />

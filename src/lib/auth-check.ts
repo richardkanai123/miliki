@@ -11,3 +11,22 @@ export const authCheck = cache(async () => {
     })
     return session
 })
+
+
+export async function getUserRoleInOrganization(slug: string) {
+    try {
+        const session = await authCheck()
+        const fullOrg = await auth.api.getFullOrganization({
+            headers: await headers(),
+            query: {
+                organizationSlug: slug,
+            },
+        })
+
+        const userRoleInOrg = fullOrg?.members.find((member) => member.userId === session?.user.id)?.role
+        return userRoleInOrg
+    } catch (error) {
+        console.error("Error verifying organization access:", error)
+        return null
+    }
+}

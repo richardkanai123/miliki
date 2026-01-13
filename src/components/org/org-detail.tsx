@@ -12,7 +12,7 @@ import { Button } from "../ui/button"
 import OrgMember from "./org-member"
 import { Skeleton } from "../ui/skeleton"
 import { getRoleDisplayName, type MilikiRole } from "@/lib/roles"
-import { Invitation } from "@/app/_generated/prisma/client/client"
+import type { Invitation } from "@/app/_generated/prisma/client/client"
 
 interface OrgDetailProps {
     params: Promise<{ slug: string }>
@@ -79,6 +79,10 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
+
+    //! TODO: normal user can only view owner and manager of the organization and their own role
+
+
     return (
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8 p-6">
             <div className="flex items-center gap-2">
@@ -119,7 +123,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            {userCanManage && (<div className="flex items-center gap-2">
                 <Button variant="default" size="lg">
                     <Link className="flex gap-1 items-center align-middle " href={`/org/${slug}/properties`}>
                         <Building2Icon className="h-4 w-4" />
@@ -134,6 +138,7 @@ const OrgDetail = async ({ params }: OrgDetailProps) => {
                     </Link>
                 </Button>
             </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>

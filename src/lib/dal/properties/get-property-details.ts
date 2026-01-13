@@ -2,8 +2,15 @@
 
 import { authCheck } from "@/lib/auth-check"
 import { hasPermission } from "@/lib/permission-helpers"
+import type{ Prisma } from "@/app/_generated/prisma/client/client"
 import { prisma } from "@/lib/prisma"
 import { cacheTag } from "next/cache"
+
+// Helper to convert Decimal to number
+function toNumber(value: Prisma.Decimal | null | undefined): number {
+    if (!value) return 0
+    return typeof value === 'object' && 'toNumber' in value ? value.toNumber() : Number(value) || 0
+}
 
 export type PropertyDetails = Awaited<ReturnType<typeof fetchPropertyDetails>>
 
@@ -13,7 +20,7 @@ async function fetchPropertyDetails(propertyId: string) {
     const cacheKey = `property-details-${propertyId}`
     cacheTag(cacheKey)
 
-    return prisma.property.findUnique({
+    const property = await prisma.property.findUnique({
         where: { id: propertyId },
         include: {
             manager: {
@@ -56,6 +63,18 @@ async function fetchPropertyDetails(propertyId: string) {
             }
         }
     })
+
+    if (!property) return null
+
+    // Transform units to convert Decimal to numbers
+    return {
+        ...property,
+        units: property.units.map(unit => ({
+            ...unit,
+            rentAmount: toNumber(unit.rentAmount),
+            depositAmount: unit.depositAmount ? toNumber(unit.depositAmount) : null,
+        }))
+    }
 }
 
 // Public function - handles auth, then calls cached function
