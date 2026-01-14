@@ -13,7 +13,7 @@ export const authCheck = cache(async () => {
 })
 
 
-export async function getUserRoleInOrganization(slug: string) {
+export const getUserRoleInOrganization = cache(async (slug: string) => {
     try {
         const session = await authCheck()
         const fullOrg = await auth.api.getFullOrganization({
@@ -29,4 +29,4 @@ export async function getUserRoleInOrganization(slug: string) {
         console.error("Error verifying organization access:", error)
         return null
     }
-}
+})
