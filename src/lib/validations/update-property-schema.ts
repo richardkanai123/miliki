@@ -2,13 +2,13 @@ import { z } from "zod";
 import { kenyaCounties } from "../counties";
 import { PropertyTypeEnum } from "./create-property-schema";
 
-// Update Property Schema
+// Update Property Schema - all fields optional except required ones
 export const updatePropertySchema = z.object({
   // Required fields
   name: z.string().min(1, "Property name is required").max(255),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
-  county: z.enum(kenyaCounties as [string, ...string[]]),
+  county: z.enum(kenyaCounties as [string, ...string[]]), // Kenyan counties
   
   // Optional fields
   description: z.string().optional().nullable(),
@@ -16,7 +16,7 @@ export const updatePropertySchema = z.object({
   postalCode: z.string().optional().nullable(),
   
   // Media - array of image URLs
-  images: z.array(z.url("Invalid image URL")).default([]),
+  images: z.array(z.string().url("Invalid image URL")).default([]),
 
   // Management
   managerId: z.string().optional().nullable(),

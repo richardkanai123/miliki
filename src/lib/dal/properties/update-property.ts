@@ -3,10 +3,10 @@
 import { authCheck } from "@/lib/auth-check"
 import { hasPermission } from "@/lib/permission-helpers"
 import { prisma } from "@/lib/prisma"
-import  { updatePropertySchema,type UpdatePropertyInput } from "@/lib/validations/update-property-schema"
+import {type UpdatePropertyFormValues, updatePropertySchema } from "@/lib/validations/update-property-schema"
 import { updateTag } from "next/cache"
 
-export async function updateProperty(propertyId: string, data: UpdatePropertyInput) {
+export async function updateProperty(propertyId: string, data: UpdatePropertyFormValues) {
     try {
         if (!propertyId) {
             return { message: "Property ID is required", success: false, property: null }
@@ -40,13 +40,15 @@ export async function updateProperty(propertyId: string, data: UpdatePropertyInp
             }
         }
 
-        // Get existing property for cache invalidation
+        // Get the existing property to get organizationId and slug for cache invalidation
         const existingProperty = await prisma.property.findUnique({
             where: { id: propertyId },
             select: { 
                 organizationId: true,
                 organization: {
-                    select: { slug: true }
+                    select: {
+                        slug: true
+                    }
                 }
             }
         })
@@ -58,23 +60,28 @@ export async function updateProperty(propertyId: string, data: UpdatePropertyInp
         // Update the property
         const updatedProperty = await prisma.property.update({
             where: { id: propertyId },
-            data: validatedData.data,
+            data: {
+                ...validatedData.data,
+            },
             select: {
                 id: true,
                 name: true,
                 organizationId: true,
                 organization: {
-                    select: { slug: true }
+                    select: {
+                        slug: true
+                    }
                 }
             }
         })
 
         // Invalidate caches
+        updateTag(`property-${propertyId}`)
         updateTag(`property-details-${propertyId}`)
-        updateTag(`properties-${existingProperty.organizationId}`)
-        updateTag(`properties-${existingProperty.organization.slug}`)
         updateTag(`property-stats-${existingProperty.organizationId}`)
         updateTag(`property-stats-${existingProperty.organization.slug}`)
+        updateTag(`properties-${existingProperty.organization.slug}`)
+        updateTag(`properties-${existingProperty.organizationId}`)
 
         return { 
             message: "Property updated successfully", 
