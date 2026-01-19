@@ -18,14 +18,12 @@ interface UnitTabsSectionProps {
     tenancies: UnitTenancy[]
     invoices: UnitInvoice[]
     payments: UnitPayment[]
-    unitId: string
 }
 
 export function UnitTabsSection({
     tenancies,
     invoices,
     payments,
-    unitId,
 }: UnitTabsSectionProps) {
     const tenanciesCount = tenancies?.filter(t => t.status === 'ACTIVE').length ?? 0
     const invoicesCount = invoices?.filter(i => ['PENDING', 'PARTIAL', 'OVERDUE'].includes(i.status)).length ?? 0

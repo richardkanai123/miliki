@@ -3,8 +3,18 @@
 import { AlertCircle, RotateCw } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
-const DefaultErrorComponent = ({ message, reset, label = "Reset" }: { message: string, reset: () => void, label?: string }) => {
+
+
+const DefaultErrorComponent = ({ message, reset, label = "Reset" }: { message: string, reset?: () => void, label?: string }) => {
+
+    const Router = useRouter()
+    const Back = () => {
+        Router.back()
+    }
+
+
     return (
         <div className="w-full h-full flex items-center justify-center p-4">
             <Alert variant="destructive" className="max-w-md w-full shadow-lg bg-card border-destructive/20">
@@ -16,7 +26,7 @@ const DefaultErrorComponent = ({ message, reset, label = "Reset" }: { message: s
                     <div className="flex justify-end pt-2">
                         <Button
                             variant="default"
-                            onClick={reset}
+                            onClick={reset ? reset : Back}
                             className="gap-2"
                         >
                             <RotateCw className="size-4" />
