@@ -4,8 +4,31 @@ import { authCheck } from "@/lib/auth-check"
 import { hasPermission } from "@/lib/permission-helpers"
 import { prisma } from "@/lib/prisma"
 import { cacheTag } from "next/cache"
+import type { Prisma } from "@/app/_generated/prisma/client/client"
 
-export type UnitForTenancy = {
+// Helper to safely convert Decimal to number
+function toNumber(value: Prisma.Decimal | number | null | undefined): number {
+    if (!value) return 0
+    if (typeof value === 'number') return value
+    if (typeof value === 'object' && 'toNumber' in value && typeof value.toNumber === 'function') {
+        return value.toNumber()
+    }
+    return Number(value) || 0
+}
+
+// Helper to safely convert Decimal to number or null
+function toNumberOrNull(value: Prisma.Decimal | number | null | undefined): number | null {
+    if (value === null || value === undefined) return null
+    if (typeof value === 'number') return value
+    if (typeof value === 'object' && 'toNumber' in value && typeof value.toNumber === 'function') {
+        return value.toNumber()
+    }
+    const num = Number(value)
+    return Number.isNaN(num) ? null : num
+}
+
+// Serialized type for Client Component compatibility
+export interface UnitForTenancy {
     id: string
     title: string
     propertyId: string
@@ -18,7 +41,8 @@ export type UnitForTenancy = {
     status: string
 }
 
-// Cached function - only fetches data, no auth
+// Cached function - fetches and serializes data (no auth)
+// IMPORTANT: Serialization happens HERE so cached data is already plain objects
 async function fetchUnitsForTenancy(slug: string): Promise<UnitForTenancy[]> {
     'use cache'
     const cacheKey = `units-for-tenancy-${slug}`
@@ -66,16 +90,23 @@ async function fetchUnitsForTenancy(slug: string): Promise<UnitForTenancy[]> {
         ]
     })
 
-    // Convert Decimal to numbers
+    // Serialize Decimal fields INSIDE the cached function
     return units.map(unit => ({
-        ...unit,
-        rentAmount: unit.rentAmount ? Number(unit.rentAmount) : 0,
-        depositAmount: unit.depositAmount ? Number(unit.depositAmount) : null,
+        id: unit.id,
+        title: unit.title,
+        propertyId: unit.propertyId,
+        property: {
+            id: unit.property.id,
+            name: unit.property.name,
+        },
+        rentAmount: toNumber(unit.rentAmount),
+        depositAmount: toNumberOrNull(unit.depositAmount),
+        status: unit.status,
     }))
 }
 
 // Public function - handles auth, then calls cached function
-export async function getUnitsForTenancy(slug: string) {
+export async function getUnitsForTenancy(slug: string): Promise<{ message: string; success: boolean; units: UnitForTenancy[] }> {
     try {
         if (!slug) {
             return { message: "Organization slug is required", success: false, units: [] }
@@ -94,7 +125,9 @@ export async function getUnitsForTenancy(slug: string) {
             return { message: "You do not have permission to create tenancies", success: false, units: [] }
         }
 
+        // Data is already serialized from the cached function
         const units = await fetchUnitsForTenancy(slug)
+        
         return { message: "Units fetched successfully", success: true, units }
     } catch (error) {
         console.error("Error fetching units:", error)

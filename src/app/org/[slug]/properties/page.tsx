@@ -3,6 +3,8 @@ import { PropertyStatsSection } from '@/components/property/property-stats-secti
 import { PropertiesTableSection } from '@/components/property/properties-table-section'
 import TableSkeleton from '@/components/skeletons/table-skeleton'
 import StatsSkeletons from '@/components/skeletons/stats-skeleton'
+import { getUserRoleInOrganization } from '@/lib/auth-check'
+import Unauthorised from '@/components/auth/unauthorised'
 
 interface PropertiesPageProps {
     params: Promise<{ slug: string }>
@@ -10,6 +12,14 @@ interface PropertiesPageProps {
 
 const PropertiesPage = async ({ params }: PropertiesPageProps) => {
     const { slug } = await params
+    const userRole = await getUserRoleInOrganization(slug)
+
+    const canManageProperty = userRole === "owner" || userRole === "manager" || userRole === "admin"
+
+
+    if (!canManageProperty) {
+        return <Unauthorised link={`/org/${slug}`} message="You are not authorized to access this property information" solution="Please contact the property owner/manager to get access" linkText="Go to organization page" />
+    }
 
     return (
         <div className="p-2 space-y-2">

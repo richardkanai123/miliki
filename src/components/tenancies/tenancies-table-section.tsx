@@ -6,19 +6,19 @@ interface TenanciesTableSectionProps {
 }
 
 export async function TenanciesTableSection({ slug }: TenanciesTableSectionProps) {
-    const result = await getTenanciesByOrg(slug)
+    const { success, tenancies, message } = await getTenanciesByOrg(slug)
 
-    if (!result.success || !result.tenancies) {
+    if (!success || !tenancies) {
         return (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-                <p className="text-muted-foreground">{result.message}</p>
+                <p className="text-muted-foreground">{message}</p>
             </div>
         )
     }
 
     return (
         <TenanciesDataTable
-            data={result.tenancies}
+            data={tenancies}
             slug={slug}
         />
     )

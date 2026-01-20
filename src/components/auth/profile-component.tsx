@@ -136,7 +136,7 @@ const ProfileComponent = async () => {
                     <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <div className="space-y-1">
                             <p className="text-sm text-muted-foreground">Organization Name</p>
-                            <p className="font-medium">{activeOrganization.name}</p>
+                            <Link href={`/org/${activeOrganization.slug}`} className="font-medium hover:underline hover:text-primary transition-colors">{activeOrganization.name}</Link>
                         </div>
                     </CardContent>
                 </Card>

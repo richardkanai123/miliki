@@ -25,7 +25,7 @@ const TenanciesPage = async ({ params }: TenanciesPageProps) => {
             </Suspense>
 
             {/* Data Table */}
-            <div className="bg-card rounded-lg border p-4">
+            <div className="bg-card rounded-none border p-4">
                 <Suspense fallback={<TableSkeleton />}>
                     <TenanciesTableSection slug={slug} />
                 </Suspense>

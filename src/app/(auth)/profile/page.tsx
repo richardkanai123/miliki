@@ -1,6 +1,8 @@
 import { Suspense } from "react"
 import ProfileComponent from "@/components/auth/profile-component"
 import ProfileSkeleton from "@/components/skeletons/profile-skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
+import InvitationsLister from "@/components/org/invitations-lister"
 
 const ProfilePage = async () => {
     return (
@@ -10,6 +12,9 @@ const ProfilePage = async () => {
             </div>
             <Suspense fallback={<ProfileSkeleton />}>
                 <ProfileComponent />
+            </Suspense>
+            <Suspense fallback={<Skeleton className="h-10 w-full" />}>
+                <InvitationsLister />
             </Suspense>
         </div>
     )
