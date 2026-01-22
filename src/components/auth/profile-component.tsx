@@ -134,12 +134,12 @@ const ProfileComponent = async () => {
                         <CardTitle className="text-lg font-semibold text-primary">Active Organization</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                        <div className="space-y-1">
-                            <p className="text-sm text-muted-foreground">Organization Name</p>
-                            <Link href={`/org/${activeOrganization.slug}`} className="font-medium hover:underline hover:text-primary transition-colors">{activeOrganization.name}</Link>
-                        </div>
+                        <Link href={`/org/${activeOrganization.slug}`} className="w-full flex flex-col items-center justify-center gap-2 p-2 rounded-lg bg-primary/50 cursor-pointer hover:bg-primary/10 transition-colors">
+                            <span className="text-xs text-muted-foreground">Click to view organization</span>
+                            <span className="font-medium text-primary transition-colors">{activeOrganization.name}</span>
+                        </Link>
                     </CardContent>
-                </Card>
+                </Card >
             ) :
                 <Card className=" border-none shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between">
@@ -154,7 +154,7 @@ const ProfileComponent = async () => {
             }
 
 
-        </div>
+        </div >
     )
 }
 
