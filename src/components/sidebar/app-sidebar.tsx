@@ -1,7 +1,6 @@
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarMenuSkeleton,
@@ -9,8 +8,7 @@ import {
 import SidebarHeaderComponent from "./sidebar-header"
 import SidebarNav from "./sidebar-nav"
 import { Suspense } from "react"
-import { Skeleton } from "../ui/skeleton"
-import LogoutBtn from "../auth/logout-btn"
+import SidebarFooterComponent from "./sidebar-footer"
 
 const AppSidebar = () => {
 
@@ -26,11 +24,7 @@ const AppSidebar = () => {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
-                <Suspense fallback={<Skeleton className="w-full h-full" />}>
-                    <LogoutBtn />
-                </Suspense>
-            </SidebarFooter>
+            <SidebarFooterComponent />
         </Sidebar>
     )
 }
