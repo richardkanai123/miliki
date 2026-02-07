@@ -5,6 +5,9 @@ import TableSkeleton from '@/components/skeletons/table-skeleton'
 import StatsSkeletons from '@/components/skeletons/stats-skeleton'
 import { getUserRoleInOrganization } from '@/lib/auth-check'
 import Unauthorised from '@/components/auth/unauthorised'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { Plus } from 'lucide-react'
 
 interface PropertiesPageProps {
     params: Promise<{ slug: string }>
@@ -22,11 +25,14 @@ const PropertiesPage = async ({ params }: PropertiesPageProps) => {
     }
 
     return (
-        <div className="p-2 space-y-2">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold tracking-tight">
-                    {slug} Properties
-                </h1>
+        <div className="w-full p-2 space-y-2">
+            <div className="w-full flex items-end justify-end">
+                <Button variant="ghost" size="sm" asChild className="self-end">
+                    <Link href={`/org/${slug}/properties/create`}>
+                        <Plus className="h-4 w-4 mr-1" />
+                        Add Property
+                    </Link>
+                </Button>
             </div>
 
             {/* Stats Cards */}
